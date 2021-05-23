@@ -28,10 +28,11 @@ export class Measurements {
 export class ScanService {
   errorAlert: HTMLIonAlertElement;
   loadingAlert: HTMLIonLoadingElement;
-  username = 'cemck';
+  username: string = 'cemck';
   currentScan: Scan = new Scan();
   currentMeasurements: Measurements = new Measurements();
   api_key: string = '4AQ33MGPXQMXYBMXV3BYS5XQ0DSX'
+  statusText: string = null;
 
   constructor(
     private httpClient: HttpClient,
@@ -86,7 +87,6 @@ export class ScanService {
       map((data: Scan[]) => {
         // console.log('Received data from /check-state' + JSON.stringify(data));
         // console.log('Scan state value: ' + JSON.stringify(data[0].state));
-        this.loadingAlert.present();
 
         if (data[0].state == null) {
           throw data[0].state;
@@ -94,15 +94,19 @@ export class ScanService {
         switch (String(data[0].state)) {
           case '0':
             console.log('0 = pending - QR-Code & upload links generated, waiting for photos to be uploaded.')
+            this.statusText = 'QR-Code & upload links generated, waiting for photos to be uploaded.';
             throw data[0].state;
           case '1':
             console.log('1 = running - photos uploaded and processing started')
+            this.statusText = 'Photos uploaded and processing started';
             throw data[0].state;
           case '2':
             console.log('2 = ready - the processing of the scan is finished. Now you can call /measurement or /size endpoint to get the result.')
+            this.statusText = 'The processing of the scan is finished. Now you can call /measurement or /size endpoint to get the result.';
             return Number(data[0].state);
           case '-1':
             console.log('-1 = error - an error occured during processing. The "error" field contains a detailed message.')
+            this.statusText = 'An error occured during processing.';
             throw data[0].state;
         }
         // return Number(data[0].state);
@@ -184,4 +188,5 @@ export class ScanService {
       console.log('Loading dismissed');
     });
   }
+
 }

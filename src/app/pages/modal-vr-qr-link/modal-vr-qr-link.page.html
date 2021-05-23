@@ -18,8 +18,10 @@
         <ion-col class="ion-text-center ion-align-self-center" size="12" size-sm>
           <div class="vertical">
 
-            <ion-img *ngIf="!this.platform.is('mobile')" [src]="convertedImage"></ion-img>
-            <h5>Please proceed to Mobilescan.me in order to complete the scan process.</h5>
+            <ion-img *ngIf="!this.platform.is('mobile') && (this.scanService.statusText == null)" [src]="convertedImage"></ion-img>
+            <h5 *ngIf="this.scanService.statusText == null">Please proceed to Mobilescan.me in order to complete the scan process.</h5>
+            <h5 *ngIf="this.scanService.statusText">{{this.scanService.statusText}}</h5>
+
             <ion-spinner *ngIf="this.showSpinner"></ion-spinner>
 
             <div *ngIf="showOpenBrowserButton && this.platform.is('mobile')">

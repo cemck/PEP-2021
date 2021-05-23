@@ -1,5 +1,5 @@
 import { Component, OnInit } from '@angular/core';
-import { ModalController, IonNav, Platform } from '@ionic/angular';
+import { ModalController, LoadingController, IonNav, Platform } from '@ionic/angular';
 import { Scan, ScanService } from '../../services/scan.service';
 import { Subscription } from 'rxjs';
 import { ModalScanResultPage } from '../modal-scan-result/modal-scan-result.page';
@@ -23,19 +23,20 @@ export class ModalVrQrLinkPage implements OnInit {
   iabOptions: InAppBrowserOptions = {
     location: 'no',
   }
+  // statusText = 'Please proceed to Mobilescan.me in order to complete the scan process.'
 
   constructor(
     private modalController: ModalController,
+    public loadingController: LoadingController,
     private nav: IonNav,
     public platform: Platform,
-    private scanService: ScanService,
+    public scanService: ScanService,
     private iab: InAppBrowser,
     private browserTab: BrowserTab,
   ) { }
 
   ngOnInit() {
-    console.log('VRQR page init');
-
+    // console.log('VRQR page init');
     this.createNewScan();
   }
 
@@ -43,8 +44,16 @@ export class ModalVrQrLinkPage implements OnInit {
     this.subscription.unsubscribe();
   }
 
+  ionViewWillEnter() {
+    // console.log('ionViewWillEnter');
+    this.scanService.statusText = null;
+  }
+
   ionViewDidEnter() {
+    // console.log('ionViewDidEnter');
     // this.showOpenBrowserButton = false;
+    if (this.platform.is('mobile')) this.presentLoading();
+    this.scanService.statusText = null;
   }
 
   goForward() {
@@ -107,13 +116,28 @@ export class ModalVrQrLinkPage implements OnInit {
         console.log('state from checkScanState(): ', state);
         if (state == 2) {
           this.showSpinner = false;
-          // if (this.platform.is('ios')) await Browser.close(); // Does not work on Android
+          this.scanService.loadingAlert.present();
           this.browserTab.close();
-          this.iab.create('pep2021://close', '_system').show();
+          this.iab.create('pep2021://close', '_system').show(); // Reopen app after closing browser tab
           this.goForward();
         }
       })
     );
   }
 
+  async presentLoading() {
+    this.loadingAlert = await this.loadingController.create({
+      // cssClass: 'my-custom-class',
+      message: 'Please wait...',
+      duration: 5000,
+      // translucent: true,
+    });
+    await this.loadingAlert.present();
+
+    await this.loadingAlert.onDidDismiss().then(() => {
+      console.log('Loading dismissed');
+      this.showOpenBrowserButton = true;
+      this.scanService.loadingAlert.dismiss();
+    });
+  }
 }
