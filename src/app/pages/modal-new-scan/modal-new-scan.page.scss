@@ -1,0 +1,17 @@
+.sqare_button {
+    height: 200px;
+    width: 200px;
+    --vertical-align: middle;
+    --padding-start: 10px;
+    --padding-end: 10px;
+    // --ripple-color: darkcyan;
+    --padding-bottom: 2px !important;
+    // --box-shadow: none;
+    margin: 20px;
+}
+.vertical {
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    line-height: 60px;
+}

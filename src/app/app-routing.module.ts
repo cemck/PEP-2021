@@ -11,6 +11,18 @@ const routes: Routes = [
     redirectTo: 'home',
     pathMatch: 'full'
   },
+  {
+    path: 'modal-new-scan',
+    loadChildren: () => import('./pages/modal-new-scan/modal-new-scan.module').then( m => m.ModalNewScanPageModule)
+  },
+  {
+    path: 'modal-vr-qr-link',
+    loadChildren: () => import('./pages/modal-vr-qr-link/modal-vr-qr-link.module').then( m => m.ModalVrQrLinkPageModule)
+  },
+  {
+    path: 'modal-scan-result',
+    loadChildren: () => import('./pages/modal-scan-result/modal-scan-result.module').then( m => m.ModalScanResultPageModule)
+  },
 ];
 
 @NgModule({

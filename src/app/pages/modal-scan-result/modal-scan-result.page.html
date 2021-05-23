@@ -1,0 +1,59 @@
+<ion-header>
+  <ion-toolbar color="light">
+    <!-- <ion-buttons slot="start"> -->
+    <!-- <ion-button (click)="close()" *ngIf="level == 0">
+        <ion-icon slot="icon-only" name="close"></ion-icon>
+      </ion-button>
+      <ion-back-button *ngIf="level > 0"></ion-back-button> -->
+    <!-- </ion-buttons> -->
+    <ion-title>ModalScanResult Page</ion-title>
+  </ion-toolbar>
+</ion-header>
+
+
+<ion-content>
+
+  <ion-list>
+    <ion-list-header>
+      Measurements
+    </ion-list-header>
+
+    <ion-list lines="full">
+      <ion-item>
+        <ion-label slot="start">{{ 'body_depth:' }}</ion-label>
+        <ion-label class="ion-text-end">{{ this.getCurrentMeasurements().body_depth ? this.getCurrentMeasurements().body_depth : '--'}}</ion-label>
+        <ion-label class="ion-text-end">{{ ' cm' }}</ion-label>
+      </ion-item>
+      <ion-item>
+        <ion-label slot="start">{{ 'body_width:' }}</ion-label>
+        <ion-label class="ion-text-end">{{ this.getCurrentMeasurements().body_width ? this.getCurrentMeasurements().body_width : '--'}}</ion-label>
+        <ion-label class="ion-text-end">{{ ' cm' }}</ion-label>
+      </ion-item>
+      <ion-item>
+        <ion-label slot="start">{{ 'elbow_height:' }}</ion-label>
+        <ion-label class="ion-text-end">{{ this.getCurrentMeasurements().elbow_height ? this.getCurrentMeasurements().elbow_height : '--'}}</ion-label>
+        <ion-label class="ion-text-end">{{ ' cm' }}</ion-label>
+      </ion-item>
+      <ion-item>
+        <ion-label slot="start">{{ 'lowerleg_length:' }}</ion-label>
+        <ion-label class="ion-text-end">{{ this.getCurrentMeasurements().lowerleg_length ? this.getCurrentMeasurements().lowerleg_length : '--'}}</ion-label>
+        <ion-label class="ion-text-end">{{ ' cm' }}</ion-label>
+      </ion-item>
+      <ion-item>
+        <ion-label slot="start">{{ 'shoulder_height:' }}</ion-label>
+        <ion-label class="ion-text-end">{{ this.getCurrentMeasurements().shoulder_height ? this.getCurrentMeasurements().shoulder_height : '--'}}</ion-label>
+        <ion-label class="ion-text-end">{{ ' cm' }}</ion-label>
+      </ion-item>
+      <ion-item>
+        <ion-label slot="start">{{ 'height:' }}</ion-label>
+        <ion-label class="ion-text-end">{{ this.getCurrentMeasurements().height ? this.getCurrentMeasurements().height : '--'}}</ion-label>
+        <ion-label class="ion-text-end">{{ ' cm' }}</ion-label>
+      </ion-item>
+    </ion-list>
+
+    <ion-button color="secondary" (click)="confirmMeasurements()" expand="block">Confirm</ion-button>
+    <ion-button color="light" (click)="restartScan()" expand="block">Retry</ion-button>
+
+  </ion-list>
+
+</ion-content>

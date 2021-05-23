@@ -1,0 +1,43 @@
+<ion-header>
+  <ion-toolbar color="light">
+    <ion-buttons slot="start">
+      <ion-button (click)="close()" *ngIf="level == 0">
+        <ion-icon slot="icon-only" name="close"></ion-icon>
+      </ion-button>
+      <ion-back-button *ngIf="level > 0"></ion-back-button>
+    </ion-buttons>
+    <ion-title>ModalVRQRLink Page</ion-title>
+  </ion-toolbar>
+</ion-header>
+
+<ion-content>
+
+  <ion-list style="height: 100%;">
+    <ion-grid style="height: 80%;">
+      <ion-row style="height: 100%;">
+        <ion-col class="ion-text-center ion-align-self-center" size="12" size-sm>
+          <div class="vertical">
+
+            <ion-img *ngIf="!this.platform.is('mobile')" [src]="convertedImage"></ion-img>
+            <h5>Please proceed to Mobilescan.me in order to complete the scan process.</h5>
+            <ion-spinner *ngIf="this.showSpinner"></ion-spinner>
+
+            <div *ngIf="showOpenBrowserButton && this.platform.is('mobile')">
+              <ion-text color="danger">
+                <h6 *ngIf="this.platform.is('mobile')">Info: Make sure to disable Pop-Up blocking in your browser settings if no window is showing up.</h6>
+              </ion-text>
+
+              <ion-button expand="block" (click)="openBrowser()">
+                <ion-icon slot="start" name="open-outline"></ion-icon>
+                Open Mobilescan.me
+              </ion-button>
+            </div>
+
+          </div>
+        </ion-col>
+      </ion-row>
+    </ion-grid>
+
+  </ion-list>
+
+</ion-content>

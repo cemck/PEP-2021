@@ -1,0 +1,45 @@
+<!-- Navigation without URL change using Modals: https://ionicframework.com/blog/how-to-navigate-in-ionic-modals-with-ion-nav/ -->
+
+<ion-header>
+  <ion-toolbar id="toolbar-light" color="light">
+    <ion-buttons slot="start">
+      <ion-button (click)="close()" *ngIf="level == 0">
+        <ion-icon slot="icon-only" name="close"></ion-icon>
+      </ion-button>
+      <ion-back-button *ngIf="level > 0"></ion-back-button>
+    </ion-buttons>
+    <ion-title>Neuer Scan</ion-title>
+  </ion-toolbar>
+</ion-header>
+
+<ion-content>
+  <!-- Responsive grid layout: https://ionicframework.com/docs/layout/grid#stacked-to-horizontal -->
+  <!-- Responsive device sizing: https://ionicframework.com/docs/layout/css-utilities#ionic-breakpoints -->
+
+  <!-- 'ion-text-center' centers items horizontally -->
+  <!-- 'ion-align-self-center' centers items vertically -->
+
+  <ion-grid style="height: 100%;">
+    <ion-row style=" height: 100%;">
+
+      <ion-col [ngClass]="{ 'ion-text-end ion-align-self-center': width >= 576, 'ion-text-center ion-align-self-end': width < 576 }" size="12" size-sm>
+        <ion-button fill="solid" size="large" class="sqare_button" (click)="presentKinectModal()">
+          <div class="vertical">
+            <ion-icon slot="start" name="image"></ion-icon>
+            <span class="">XBOX KINECT</span>
+          </div>
+        </ion-button>
+      </ion-col>
+
+      <ion-col [ngClass]="{ 'ion-text-start ion-align-self-center': width >= 576, 'ion-text-center ion-align-self-start': width < 576 }" size="12" size-sm>
+        <ion-button fill="solid" size="large" class="sqare_button" (click)="presentVRModal()">
+          <div class="vertical">
+            <ion-icon slot="start" name="image"></ion-icon>
+            <span class="">VIRTUALRETAIL</span>
+          </div>
+        </ion-button>
+      </ion-col>
+
+    </ion-row>
+  </ion-grid>
+</ion-content>
