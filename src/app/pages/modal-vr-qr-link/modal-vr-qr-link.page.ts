@@ -1,13 +1,11 @@
 import { Component, OnInit } from '@angular/core';
-import { ModalController, IonNav, Platform, LoadingController } from '@ionic/angular';
-// import { Plugins } from '@capacitor/core';  // Docs: https://capacitorjs.com
-import { Measurements, Scan, ScanService } from '../../services/scan.service';
+import { ModalController, IonNav, Platform } from '@ionic/angular';
+import { Scan, ScanService } from '../../services/scan.service';
 import { Subscription } from 'rxjs';
 import { ModalScanResultPage } from '../modal-scan-result/modal-scan-result.page';
 import { InAppBrowser, InAppBrowserOptions } from '@ionic-native/in-app-browser/ngx';
 import { BrowserTab } from '@ionic-native/browser-tab/ngx';
 
-// const { Browser } = Plugins;
 
 @Component({
   selector: 'app-modal-vr-qr-link',
@@ -28,12 +26,11 @@ export class ModalVrQrLinkPage implements OnInit {
 
   constructor(
     private modalController: ModalController,
-    public loadingController: LoadingController,
     private nav: IonNav,
     public platform: Platform,
     private scanService: ScanService,
     private iab: InAppBrowser,
-    private browserTab: BrowserTab
+    private browserTab: BrowserTab,
   ) { }
 
   ngOnInit() {
@@ -48,7 +45,6 @@ export class ModalVrQrLinkPage implements OnInit {
 
   ionViewDidEnter() {
     // this.showOpenBrowserButton = false;
-    if (this.platform.is('mobile')) this.presentLoading();
   }
 
   goForward() {
@@ -82,7 +78,7 @@ export class ModalVrQrLinkPage implements OnInit {
     );
   }
 
-  openBrowser() {
+  async openBrowser() {
     console.log('currentScan link:' + this.scanService.currentScan.link);
 
     if (this.scanService.currentScan.link == null) {
@@ -118,21 +114,6 @@ export class ModalVrQrLinkPage implements OnInit {
         }
       })
     );
-  }
-
-  async presentLoading() {
-    this.loadingAlert = await this.loadingController.create({
-      // cssClass: 'my-custom-class',
-      message: 'Please wait...',
-      duration: 5000,
-      // translucent: true,
-    });
-    await this.loadingAlert.present();
-
-    await this.loadingAlert.onDidDismiss().then(() => {
-      console.log('Loading dismissed');
-      this.showOpenBrowserButton = true;
-    });
   }
 
 }

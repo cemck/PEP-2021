@@ -1,10 +1,6 @@
-import { Component, OnInit, NgZone } from '@angular/core';
+import { Component, OnInit } from '@angular/core';
 import { ModalController, IonNav, Platform } from '@ionic/angular';
-import { ModalScanResultPage } from './../modal-scan-result/modal-scan-result.page';
-// import { Plugins, StatusBarStyle } from '@capacitor/core'
 import { ModalVrQrLinkPage } from '../modal-vr-qr-link/modal-vr-qr-link.page';
-
-// const { StatusBar } = Plugins;
 
 @Component({
   selector: 'app-modal-new-scan',
@@ -20,7 +16,6 @@ export class ModalNewScanPage implements OnInit {
     private modalController: ModalController,
     private nav: IonNav,
     private platform: Platform,
-    private zone: NgZone,
   ) {
     this.addAndroidBackButtonSupport();
   }

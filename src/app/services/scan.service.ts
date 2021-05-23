@@ -2,7 +2,7 @@ import { Injectable } from '@angular/core';
 import { HttpClient, HttpHeaders } from '@angular/common/http';
 import { Observable, throwError, timer } from 'rxjs';
 import { map, catchError, tap, retryWhen, delayWhen } from 'rxjs/operators';
-import { AlertController } from '@ionic/angular';
+import { AlertController, LoadingController } from '@ionic/angular';
 
 export class Scan {
   // _id: number;
@@ -26,7 +26,8 @@ export class Measurements {
   providedIn: 'root'
 })
 export class ScanService {
-  alert: HTMLIonAlertElement;
+  errorAlert: HTMLIonAlertElement;
+  loadingAlert: HTMLIonLoadingElement;
   username = 'cemck';
   currentScan: Scan = new Scan();
   currentMeasurements: Measurements = new Measurements();
@@ -35,7 +36,10 @@ export class ScanService {
   constructor(
     private httpClient: HttpClient,
     private alertController: AlertController,
-  ) { }
+    public loadingController: LoadingController,
+  ) {
+    this.initLoadingAlert();
+  }
   // TODO: Add method to cancel any running API call subscriptions
 
   createNewScan(username: string): Observable<Scan> {
@@ -82,6 +86,8 @@ export class ScanService {
       map((data: Scan[]) => {
         // console.log('Received data from /check-state' + JSON.stringify(data));
         // console.log('Scan state value: ' + JSON.stringify(data[0].state));
+        this.loadingAlert.present();
+
         if (data[0].state == null) {
           throw data[0].state;
         }
@@ -109,6 +115,7 @@ export class ScanService {
           delayWhen(res => timer(5 * 1000))
         )
       ), catchError(error => {
+        this.loadingAlert.dismiss();
         this.presentAlert(error['status']);
         return throwError('Could not check scan state!: ' + JSON.stringify(error));
       })
@@ -132,11 +139,13 @@ export class ScanService {
       map((data: Measurements) => {
         // console.log('Received data from /getmeasurements: ' + JSON.stringify(data));
         this.currentMeasurements = data;
+        this.loadingAlert.dismiss();
         // this.checkScanState(data).subscribe(async (state: number) => {
         //   console.log('state from checkScanState(): ', state);
         // });
         return data;
       }), catchError(error => {
+        this.loadingAlert.dismiss();
         this.presentAlert(error['status']);
         return throwError('Could not get measurements!: ' + JSON.stringify(error));
       })
@@ -149,7 +158,7 @@ export class ScanService {
   }
 
   async presentAlert(error: string) {
-    this.alert = await this.alertController.create({
+    this.errorAlert = await this.alertController.create({
       // cssClass: 'my-custom-class',
       header: error + ' Error',
       subHeader: 'Could not connect to API.',
@@ -157,9 +166,22 @@ export class ScanService {
       buttons: ['OK']
     });
 
-    await this.alert.present();
+    await this.errorAlert.present();
 
     // const { role } = await this.alert.onDidDismiss();
     // console.log('onDidDismiss resolved with role', role);
+  }
+
+  async initLoadingAlert() {
+    this.loadingAlert = await this.loadingController.create({
+      // cssClass: 'my-custom-class',
+      message: 'Please wait...',
+      // duration: 5000,
+      // translucent: true,
+    });
+
+    await this.loadingAlert.onDidDismiss().then(() => {
+      console.log('Loading dismissed');
+    });
   }
 }

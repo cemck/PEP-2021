@@ -1,8 +1,8 @@
 import { Component, OnInit } from '@angular/core';
 import { ModalController, AlertController, IonNav, Platform } from '@ionic/angular';
-import { Measurements, Scan, ScanService } from '../../services/scan.service';
+import { Measurements, ScanService } from '../../services/scan.service';
 import { Subscription } from 'rxjs';
-import { InAppBrowser, InAppBrowserOptions } from '@ionic-native/in-app-browser/ngx';
+import { InAppBrowser } from '@ionic-native/in-app-browser/ngx';
 
 @Component({
   selector: 'app-modal-scan-result',
