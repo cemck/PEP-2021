@@ -10,6 +10,7 @@ import { AppRoutingModule } from './app-routing.module';
 import { HttpClientModule } from '@angular/common/http';
 import { InAppBrowser } from '@ionic-native/in-app-browser/ngx';
 import { BrowserTab } from '@ionic-native/browser-tab/ngx';
+import { StatusBar } from '@ionic-native/status-bar/ngx';
 
 @NgModule({
   declarations: [AppComponent],
@@ -26,6 +27,7 @@ import { BrowserTab } from '@ionic-native/browser-tab/ngx';
     { provide: RouteReuseStrategy, useClass: IonicRouteStrategy },
     InAppBrowser,
     BrowserTab,
+    StatusBar
   ],
   bootstrap: [AppComponent],
 })

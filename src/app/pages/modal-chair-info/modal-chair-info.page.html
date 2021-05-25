@@ -1,0 +1,54 @@
+<ion-header>
+  <ion-toolbar color="light">
+    <!-- <ion-buttons slot="start"> -->
+    <!-- <ion-button (click)="close()" *ngIf="level == 0">
+        <ion-icon slot="icon-only" name="close"></ion-icon>
+      </ion-button>
+      <ion-back-button *ngIf="level > 0"></ion-back-button> -->
+    <!-- </ion-buttons> -->
+    <ion-title>ModalChairInfo Page</ion-title>
+  </ion-toolbar>
+</ion-header>
+
+
+<ion-content>
+
+  <ion-list>
+    <ion-list-header>
+      Chair Info
+    </ion-list-header>
+
+    <ion-list lines="full">
+      <ion-item>
+        <ion-label slot="start">{{ 'SH:' }}</ion-label>
+        <ion-label class="ion-text-end">{{ this.getCurrentChairData().sh ? this.getCurrentChairData().sh : '--'}}</ion-label>
+        <ion-label class="ion-text-end">{{ ' cm' }}</ion-label>
+      </ion-item>
+      <ion-item>
+        <ion-label slot="start">{{ 'ST:' }}</ion-label>
+        <ion-label class="ion-text-end">{{ this.getCurrentChairData().st ? this.getCurrentChairData().st : '--'}}</ion-label>
+        <ion-label class="ion-text-end">{{ ' cm' }}</ion-label>
+      </ion-item>
+      <ion-item>
+        <ion-label slot="start">{{ 'SB:' }}</ion-label>
+        <ion-label class="ion-text-end">{{ this.getCurrentChairData().sb ? this.getCurrentChairData().sb : '--'}}</ion-label>
+        <ion-label class="ion-text-end">{{ ' cm' }}</ion-label>
+      </ion-item>
+      <ion-item>
+        <ion-label slot="start">{{ 'LH:' }}</ion-label>
+        <ion-label class="ion-text-end">{{ this.getCurrentChairData().lh ? this.getCurrentChairData().lh : '--'}}</ion-label>
+        <ion-label class="ion-text-end">{{ ' cm' }}</ion-label>
+      </ion-item>
+      <ion-item>
+        <ion-label slot="start">{{ 'AH:' }}</ion-label>
+        <ion-label class="ion-text-end">{{ this.getCurrentChairData().ah ? this.getCurrentChairData().ah : '--'}}</ion-label>
+        <ion-label class="ion-text-end">{{ ' cm' }}</ion-label>
+      </ion-item>
+    </ion-list>
+
+    <ion-button color="secondary" (click)="confirmChairData()" expand="block">Confirm</ion-button>
+    <ion-button color="light" (click)="restartScan()" expand="block">Retry</ion-button>
+
+  </ion-list>
+
+</ion-content>

@@ -3,6 +3,7 @@ import { ModalController, AlertController, IonNav, Platform } from '@ionic/angul
 import { Measurements, ScanService } from '../../services/scan.service';
 import { Subscription } from 'rxjs';
 import { InAppBrowser } from '@ionic-native/in-app-browser/ngx';
+import { ModalChairInfoPage } from '../modal-chair-info/modal-chair-info.page'
 
 @Component({
   selector: 'app-modal-scan-result',
@@ -11,7 +12,7 @@ import { InAppBrowser } from '@ionic-native/in-app-browser/ngx';
 })
 export class ModalScanResultPage implements OnInit {
   level = 2;
-  nextPage = ModalScanResultPage;
+  nextPage = ModalChairInfoPage;
   private subscription: Subscription = new Subscription();
   alert: HTMLIonAlertElement;
 
@@ -38,7 +39,7 @@ export class ModalScanResultPage implements OnInit {
 
   ionViewDidEnter() {
     this.nav.removeIndex(1);
-    this.iab.create('pep2021://close', '_system').show();
+    if (this.platform.is('mobile')) this.iab.create('pep2021://close', '_system').show(); // Reopen app after closing browser tab
   }
 
   goForward() {
@@ -60,6 +61,16 @@ export class ModalScanResultPage implements OnInit {
 
   confirmMeasurements() {
     console.log('confirmed measurements');
+
+    this.subscription.add(
+      this.scanService.confirmMeasurements(this.scanService.currentMeasurements).subscribe(async (data: Measurements) => {
+        console.log('data:' + JSON.stringify(data));
+        this.scanService.loadingAlert.present();
+        this.goForward();
+      }, error => {
+        this.presentAlert();
+      })
+    );
   }
 
   restartScan() {
@@ -71,7 +82,7 @@ export class ModalScanResultPage implements OnInit {
     this.alert = await this.alertController.create({
       // cssClass: 'my-custom-class',
       header: 'Error',
-      subHeader: 'The given measurement data was invalid.',
+      subHeader: 'The given data was invalid.',
       message: 'Please retry the scan process.',
       buttons: ['OK']
     });

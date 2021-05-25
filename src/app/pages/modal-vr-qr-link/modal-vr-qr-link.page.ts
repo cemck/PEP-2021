@@ -23,7 +23,6 @@ export class ModalVrQrLinkPage implements OnInit {
   iabOptions: InAppBrowserOptions = {
     location: 'no',
   }
-  // statusText = 'Please proceed to Mobilescan.me in order to complete the scan process.'
 
   constructor(
     private modalController: ModalController,
@@ -117,8 +116,8 @@ export class ModalVrQrLinkPage implements OnInit {
         if (state == 2) {
           this.showSpinner = false;
           this.scanService.loadingAlert.present();
-          this.browserTab.close();
-          this.iab.create('pep2021://close', '_system').show(); // Reopen app after closing browser tab
+          if (this.platform.is('mobile')) this.browserTab.close();
+          if (this.platform.is('mobile')) this.iab.create('pep2021://close', '_system').show(); // Reopen app after closing browser tab
           this.goForward();
         }
       })

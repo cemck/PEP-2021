@@ -23,6 +23,10 @@ const routes: Routes = [
     path: 'modal-scan-result',
     loadChildren: () => import('./pages/modal-scan-result/modal-scan-result.module').then( m => m.ModalScanResultPageModule)
   },
+  {
+    path: 'modal-chair-info',
+    loadChildren: () => import('./pages/modal-chair-info/modal-chair-info.module').then( m => m.ModalChairInfoPageModule)
+  },
 ];
 
 @NgModule({

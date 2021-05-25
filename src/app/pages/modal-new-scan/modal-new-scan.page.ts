@@ -1,6 +1,7 @@
 import { Component, OnInit } from '@angular/core';
 import { ModalController, IonNav, Platform } from '@ionic/angular';
 import { ModalVrQrLinkPage } from '../modal-vr-qr-link/modal-vr-qr-link.page';
+import { StatusBar } from '@ionic-native/status-bar/ngx';
 
 @Component({
   selector: 'app-modal-new-scan',
@@ -16,6 +17,7 @@ export class ModalNewScanPage implements OnInit {
     private modalController: ModalController,
     private nav: IonNav,
     private platform: Platform,
+    private statusBar: StatusBar
   ) {
     this.addAndroidBackButtonSupport();
   }
@@ -85,6 +87,9 @@ export class ModalNewScanPage implements OnInit {
 
   setStatusbarColor() {
     const toolbarColor = getComputedStyle(document.querySelector('#toolbar-light')).getPropertyValue('--ion-color-shade').trim();
+
+    this.statusBar.backgroundColorByHexString(toolbarColor);
+    this.isStatusBarLight ? this.statusBar.styleDefault() : this.statusBar.styleLightContent();
 
     // StatusBar.setBackgroundColor({
     //   color: toolbarColor

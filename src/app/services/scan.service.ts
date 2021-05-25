@@ -1,11 +1,13 @@
 import { Injectable } from '@angular/core';
 import { HttpClient, HttpHeaders } from '@angular/common/http';
-import { Observable, throwError, timer } from 'rxjs';
+import { Observable, of, throwError, timer } from 'rxjs';
 import { map, catchError, tap, retryWhen, delayWhen } from 'rxjs/operators';
-import { AlertController, LoadingController } from '@ionic/angular';
+import { AlertController, LoadingController, Platform } from '@ionic/angular';
+import { InAppBrowser } from '@ionic-native/in-app-browser/ngx';
+import { BrowserTab } from '@ionic-native/browser-tab/ngx';
 
 export class Scan {
-  // _id: number;
+  _id: string;
   username: string;
   id: string;
   qrcode: string;
@@ -22,6 +24,14 @@ export class Measurements {
   height: number;
 }
 
+export class Chair {
+  sh: number;
+  st: number;
+  sb: number;
+  lh: number;
+  ah: number;
+}
+
 @Injectable({
   providedIn: 'root'
 })
@@ -31,13 +41,16 @@ export class ScanService {
   username: string = 'cemck';
   currentScan: Scan = new Scan();
   currentMeasurements: Measurements = new Measurements();
-  api_key: string = '4AQ33MGPXQMXYBMXV3BYS5XQ0DSX'
   statusText: string = null;
+  currentChair: Chair = new Chair();
 
   constructor(
     private httpClient: HttpClient,
     private alertController: AlertController,
     public loadingController: LoadingController,
+    private iab: InAppBrowser,
+    private browserTab: BrowserTab,
+    public platform: Platform,
   ) {
     this.initLoadingAlert();
   }
@@ -47,13 +60,13 @@ export class ScanService {
     let headers: HttpHeaders = new HttpHeaders();
     headers = headers.append('Accept', 'application/json');
     headers = headers.append('Content-Type', 'application/json');
-    headers = headers.append('x-api-key', this.api_key);
     // console.log("createNewScan() headers:", headers);
 
-    // let body = JSON.stringify({ username });
+    let body = JSON.stringify({ username });
 
-    return this.httpClient.get<Scan>(
-      'https://api.mobilescan.me/prod/v1/qrcode',
+    return this.httpClient.post<Scan>(
+      'http://192.168.0.196:5000/createscan',
+      body,
       { headers: headers }
     ).pipe(
       map((data: Scan) => {
@@ -74,13 +87,12 @@ export class ScanService {
     let headers: HttpHeaders = new HttpHeaders();
     headers = headers.append('Accept', 'application/json');
     headers = headers.append('Content-Type', 'application/json');
-    headers = headers.append('x-api-key', this.api_key);
     // console.log("got id: " + scan.id);
     let body = JSON.stringify({ ids: [scan.id] });
     // console.log("checkScanState() json body to send:", body);
 
     return this.httpClient.post<Scan[]>(
-      'https://api.mobilescan.me/prod/v1/state',
+      'http://192.168.0.196:5000/checkstate',
       body,
       { headers: headers }
     ).pipe(
@@ -99,6 +111,8 @@ export class ScanService {
           case '1':
             console.log('1 = running - photos uploaded and processing started')
             this.statusText = 'Photos uploaded and processing started';
+            if (this.platform.is('mobile')) this.browserTab.close();
+            if (this.platform.is('mobile')) this.iab.create('pep2021://close', '_system').show(); // Reopen app after closing browser tab
             throw data[0].state;
           case '2':
             console.log('2 = ready - the processing of the scan is finished. Now you can call /measurement or /size endpoint to get the result.')
@@ -130,19 +144,19 @@ export class ScanService {
     let headers: HttpHeaders = new HttpHeaders();
     headers = headers.append('Accept', 'application/json');
     headers = headers.append('Content-Type', 'application/json');
-    headers = headers.append('x-api-key', this.api_key);
 
     let body = JSON.stringify({ id: scan.id });
     console.log("getMeasurements() json body to send:", body);
 
     return this.httpClient.post<Measurements>(
-      'https://api.mobilescan.me/prod/v1/extrameasurement',
+      'http://192.168.0.196:5000/extrameasurement',
       body,
       { headers: headers }
     ).pipe(
       map((data: Measurements) => {
         // console.log('Received data from /getmeasurements: ' + JSON.stringify(data));
         this.currentMeasurements = data;
+        this.currentChair = { sh: data['body_depth'] + 3.0, st: data['body_width'], sb: data['elbow_height'] + 2.5, lh: data['lowerleg_length'] - 6.5, ah: data['shoulder_height'] };
         this.loadingAlert.dismiss();
         // this.checkScanState(data).subscribe(async (state: number) => {
         //   console.log('state from checkScanState(): ', state);
@@ -156,9 +170,75 @@ export class ScanService {
     )
   };
 
+  confirmMeasurements(measurements: Measurements): Observable<Measurements> {
+    let headers: HttpHeaders = new HttpHeaders();
+    headers = headers.append('Accept', 'application/json');
+    headers = headers.append('Content-Type', 'application/json');
+
+    let body = JSON.stringify({ 'vr_id': this.currentScan.id, 'measurements': measurements });
+    // console.log("getMeasurements() json body to send:", body);
+
+    return this.httpClient.post<Measurements>(
+      'http://192.168.0.196:5000/measurements',
+      body,
+      { headers: headers }
+    ).pipe(
+      map((data: Measurements) => {
+        console.log('Received data from /measurements: ' + JSON.stringify(data));
+        // this.currentMeasurements = data;
+        // this.loadingAlert.dismiss();
+        // this.checkScanState(data).subscribe(async (state: number) => {
+        //   console.log('state from checkScanState(): ', state);
+        // });
+        return data;
+      }), catchError(error => {
+        this.loadingAlert.dismiss();
+        this.presentAlert(error['status']);
+        return throwError('Could not confirm measurements!: ' + JSON.stringify(error));
+      })
+    )
+  };
+
+  // getChairData(): Observable<Chair> {
+  //   let headers: HttpHeaders = new HttpHeaders();
+  //   headers = headers.append('Accept', 'application/json');
+  //   headers = headers.append('Content-Type', 'application/json');
+  //   // console.log("got id: " + scan.id);
+  //   // let body = JSON.stringify({ ids: [scan.id] });
+  //   // console.log("checkScanState() json body to send:", body);
+
+  //   return this.httpClient.get<Chair>(
+  //     'http://192.168.0.196:5000/chairdata',
+  //     // body,
+  //     { headers: headers }
+  //   ).pipe(
+  //     map((data: Chair) => {
+  //       console.log('Received data from /chairdata' + JSON.stringify(data));
+  //       // console.log('Scan state value: ' + JSON.stringify(data[0].state));
+  //       this.currentChair = data;
+  //       this.loadingAlert.dismiss();
+
+  //       return data;
+  //     }),
+  //     retryWhen(errors =>
+  //       errors.pipe(
+  //         //log error message
+  //         tap(res => console.log(`Did not receive chair data! Waiting...`)),
+  //         //restart in 5 seconds
+  //         delayWhen(res => timer(5 * 1000))
+  //       )
+  //     ), catchError(error => {
+  //       this.loadingAlert.dismiss();
+  //       this.presentAlert(error['status']);
+  //       return throwError('Could not check scan state!: ' + JSON.stringify(error));
+  //     })
+  //   )
+  // };
+
   reset() {
     this.currentScan = new Scan();
     this.currentMeasurements = new Measurements();
+    this.currentChair = new Chair();
   }
 
   async presentAlert(error: string) {

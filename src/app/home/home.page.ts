@@ -2,10 +2,9 @@ import { Component } from '@angular/core';
 import { ModalController, IonRouterOutlet } from '@ionic/angular';
 import { ModalBaseComponent } from '../components/modal-base/modal-base.component';
 import { ModalNewScanPage } from '../pages/modal-new-scan/modal-new-scan.page';
-// import { Plugins, StatusBarStyle } from '@capacitor/core'
 import { Platform } from '@ionic/angular';
-
-// const { StatusBar } = Plugins;
+import { StatusBar } from '@ionic-native/status-bar/ngx';
+import * as delay from 'delay';
 
 @Component({
   selector: 'app-home',
@@ -19,7 +18,8 @@ export class HomePage {
   constructor(
     private modalController: ModalController,
     private routerOutlet: IonRouterOutlet,
-    public platform: Platform
+    public platform: Platform,
+    private statusBar: StatusBar
   ) { }
 
   ngOnInit(): void {
@@ -97,7 +97,7 @@ export class HomePage {
 
   ionViewDidEnter() {
     if (this.platform.is('android')) {
-      this.setStatusbarColor();
+      this.setStatusbarColor(true);
     }
   }
 
@@ -114,7 +114,7 @@ export class HomePage {
     modal.onWillDismiss().then(() => {
       // console.log(data);
       // { category_selected: foo }
-      this.setStatusbarColor();
+      this.setStatusbarColor(false);
     });
 
     await modal.present();
@@ -132,15 +132,13 @@ export class HomePage {
     // await modal.present();
   }
 
-  setStatusbarColor() {
+  async setStatusbarColor(init: boolean) {
     const toolbarColor = getComputedStyle(document.querySelector('#toolbar-secondary')).getPropertyValue('--ion-color-shade').trim();
 
-    // StatusBar.setBackgroundColor({
-    //   color: toolbarColor
-    // });
+    if (init) await delay(2000); // Delay to fix statusbar overlaping the splashscreen
 
-    // StatusBar.setStyle({
-    //   style: this.isStatusBarLight ? StatusBarStyle.Light : StatusBarStyle.Dark
-    // });
+    this.statusBar.backgroundColorByHexString(toolbarColor);
+    this.statusBar.styleLightContent();
   }
 }
+

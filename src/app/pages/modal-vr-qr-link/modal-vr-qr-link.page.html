@@ -24,9 +24,10 @@
 
             <ion-spinner *ngIf="this.showSpinner"></ion-spinner>
 
-            <div *ngIf="showOpenBrowserButton && this.platform.is('mobile')">
+            <div *ngIf="this.platform.is('mobile') && (this.scanService.statusText == null) && showOpenBrowserButton">
               <ion-text color="danger">
-                <h6 *ngIf="this.platform.is('mobile')">Info: Make sure to disable Pop-Up blocking in your browser settings if no window is showing up.</h6>
+                <h6 *ngIf="this.platform.is('mobile')">Info: Make sure to disable Pop-Up blocking in your browser
+                  settings if no window is showing up.</h6>
               </ion-text>
 
               <ion-button expand="block" (click)="openBrowser()">
