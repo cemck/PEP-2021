@@ -1,0 +1,68 @@
+<ion-header>
+  <ion-toolbar color="light">
+    <!-- <ion-buttons slot="start"> -->
+    <!-- <ion-button (click)="close()" *ngIf="level == 0">
+        <ion-icon slot="icon-only" name="close"></ion-icon>
+      </ion-button>
+      <ion-back-button *ngIf="level > 0"></ion-back-button> -->
+    <!-- </ion-buttons> -->
+    <ion-title>ModalChairPart Page</ion-title>
+  </ion-toolbar>
+</ion-header>
+
+<ion-content>
+
+  <ion-list>
+    <ion-list-header>
+      Measurements
+    </ion-list-header>
+
+    <ion-list lines="full">
+      <ion-item>
+        <ion-label slot="start">{{ 'OgR:' }}</ion-label>
+        <ion-label class="ion-text-end">{{ this.getCurrentChairParts().OgR ? this.getCurrentChairParts().OgR.toFixed(2) : '--'}}</ion-label>
+        <ion-label class="ion-text-end">{{ ' cm' }}</ion-label>
+      </ion-item>
+      <ion-item>
+        <ion-label slot="start">{{ 'OgL:' }}</ion-label>
+        <ion-label class="ion-text-end">{{ this.getCurrentChairParts().OgL ? this.getCurrentChairParts().OgL.toFixed(2) : '--'}}</ion-label>
+        <ion-label class="ion-text-end">{{ ' cm' }}</ion-label>
+      </ion-item>
+      <ion-item>
+        <ion-label slot="start">{{ 'UgR:' }}</ion-label>
+        <ion-label class="ion-text-end">{{ this.getCurrentChairParts().UgR ? this.getCurrentChairParts().UgR.toFixed(2) : '--'}}</ion-label>
+        <ion-label class="ion-text-end">{{ ' cm' }}</ion-label>
+      </ion-item>
+      <ion-item>
+        <ion-label slot="start">{{ 'UgL:' }}</ion-label>
+        <ion-label class="ion-text-end">{{ this.getCurrentChairParts().UgL ? this.getCurrentChairParts().UgL.toFixed(2) : '--'}}</ion-label>
+        <ion-label class="ion-text-end">{{ ' cm' }}</ion-label>
+      </ion-item>
+    </ion-list>
+
+    <ion-list>
+      <ion-list-header>
+        <ion-label>
+          Select Chair Part to produce
+        </ion-label>
+      </ion-list-header>
+
+
+    </ion-list>
+
+    <ion-item>
+      <ion-label>Part</ion-label>
+      <ion-select interface="popover">
+        <ion-select-option value="OgR">OgR</ion-select-option>
+        <ion-select-option value="OgL">OgL</ion-select-option>
+        <ion-select-option value="UgR">UgR</ion-select-option>
+        <ion-select-option value="UgL">UgL</ion-select-option>
+      </ion-select>
+    </ion-item>
+
+    <ion-button color="secondary" (click)="confirmChairParts()" expand="block">Confirm</ion-button>
+    <ion-button color="light" (click)="restartScan()" expand="block">Retry</ion-button>
+
+  </ion-list>
+
+</ion-content>

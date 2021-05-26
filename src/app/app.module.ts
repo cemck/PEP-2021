@@ -27,7 +27,7 @@ import { StatusBar } from '@ionic-native/status-bar/ngx';
     { provide: RouteReuseStrategy, useClass: IonicRouteStrategy },
     InAppBrowser,
     BrowserTab,
-    StatusBar
+    StatusBar,
   ],
   bootstrap: [AppComponent],
 })

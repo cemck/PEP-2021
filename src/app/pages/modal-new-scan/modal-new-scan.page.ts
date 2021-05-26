@@ -31,7 +31,7 @@ export class ModalNewScanPage implements OnInit {
       // if (this.platform.is('android')) {
       //   this.setStatusbarColor();
       // }
-      this.setStatusbarColor();
+      if (this.platform.is('mobile')) this.setStatusbarColor();
     });
 
   }
@@ -43,7 +43,7 @@ export class ModalNewScanPage implements OnInit {
     // if (this.platform.is('android')) {
     //   this.setStatusbarColor();
     // }
-    this.setStatusbarColor();
+    if (this.platform.is('mobile')) this.setStatusbarColor();
 
   }
 

@@ -27,6 +27,10 @@ const routes: Routes = [
     path: 'modal-chair-info',
     loadChildren: () => import('./pages/modal-chair-info/modal-chair-info.module').then( m => m.ModalChairInfoPageModule)
   },
+  {
+    path: 'modal-chair-parts',
+    loadChildren: () => import('./pages/modal-chair-parts/modal-chair-parts.module').then( m => m.ModalChairPartsPageModule)
+  },
 ];
 
 @NgModule({

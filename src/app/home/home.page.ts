@@ -96,9 +96,7 @@ export class HomePage {
   }
 
   ionViewDidEnter() {
-    if (this.platform.is('android')) {
-      this.setStatusbarColor(true);
-    }
+    if (this.platform.is('mobile')) this.setStatusbarColor(true);
   }
 
   async presentModal() {
@@ -108,13 +106,14 @@ export class HomePage {
       componentProps: {
         rootPage: ModalNewScanPage,
       },
-      backdropDismiss: false
+      backdropDismiss: false,
+      cssClass: 'my-fullscreen-modal'
     });
 
     modal.onWillDismiss().then(() => {
       // console.log(data);
       // { category_selected: foo }
-      this.setStatusbarColor(false);
+      if (this.platform.is('mobile')) this.setStatusbarColor(false);
     });
 
     await modal.present();

@@ -3,7 +3,7 @@ import { ModalController, AlertController, IonNav, Platform } from '@ionic/angul
 import { Measurements, ScanService } from '../../services/scan.service';
 import { Subscription } from 'rxjs';
 import { InAppBrowser } from '@ionic-native/in-app-browser/ngx';
-import { ModalChairInfoPage } from '../modal-chair-info/modal-chair-info.page'
+import { ModalChairPartsPage } from '../modal-chair-parts/modal-chair-parts.page'
 
 @Component({
   selector: 'app-modal-scan-result',
@@ -12,7 +12,7 @@ import { ModalChairInfoPage } from '../modal-chair-info/modal-chair-info.page'
 })
 export class ModalScanResultPage implements OnInit {
   level = 2;
-  nextPage = ModalChairInfoPage;
+  nextPage = ModalChairPartsPage;
   private subscription: Subscription = new Subscription();
   alert: HTMLIonAlertElement;
 

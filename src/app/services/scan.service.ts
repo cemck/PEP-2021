@@ -32,6 +32,13 @@ export class Chair {
   ah: number;
 }
 
+export class ChairParts {
+  OgR: number;
+  OgL: number;
+  UgR: number;
+  UgL: number;
+}
+
 @Injectable({
   providedIn: 'root'
 })
@@ -43,6 +50,7 @@ export class ScanService {
   currentMeasurements: Measurements = new Measurements();
   statusText: string = null;
   currentChair: Chair = new Chair();
+  currentChairParts: ChairParts = new ChairParts();
 
   constructor(
     private httpClient: HttpClient,
@@ -199,46 +207,83 @@ export class ScanService {
     )
   };
 
-  // getChairData(): Observable<Chair> {
-  //   let headers: HttpHeaders = new HttpHeaders();
-  //   headers = headers.append('Accept', 'application/json');
-  //   headers = headers.append('Content-Type', 'application/json');
-  //   // console.log("got id: " + scan.id);
-  //   // let body = JSON.stringify({ ids: [scan.id] });
-  //   // console.log("checkScanState() json body to send:", body);
+  getChairParts(scan: Scan): Observable<ChairParts> {
+    let headers: HttpHeaders = new HttpHeaders();
+    headers = headers.append('Accept', 'application/json');
+    headers = headers.append('Content-Type', 'application/json');
+    // console.log("got id: " + scan.id);
+    let body = JSON.stringify({ vr_id: scan.id });
+    // console.log("checkScanState() json body to send:", body);
 
-  //   return this.httpClient.get<Chair>(
-  //     'http://192.168.0.196:5000/chairdata',
-  //     // body,
-  //     { headers: headers }
-  //   ).pipe(
-  //     map((data: Chair) => {
-  //       console.log('Received data from /chairdata' + JSON.stringify(data));
-  //       // console.log('Scan state value: ' + JSON.stringify(data[0].state));
-  //       this.currentChair = data;
-  //       this.loadingAlert.dismiss();
+    return this.httpClient.post<ChairParts>(
+      'http://192.168.0.196:5000/chair_pipe_lengths',
+      body,
+      { headers: headers }
+    ).pipe(
+      map((data: ChairParts) => {
+        console.log('Received data from /chair_pipe_lengths' + JSON.stringify(data));
+        // console.log('Scan state value: ' + JSON.stringify(data[0].state));
+        this.currentChairParts = data['length_data'];
+        // this.loadingAlert.dismiss();
 
-  //       return data;
-  //     }),
-  //     retryWhen(errors =>
-  //       errors.pipe(
-  //         //log error message
-  //         tap(res => console.log(`Did not receive chair data! Waiting...`)),
-  //         //restart in 5 seconds
-  //         delayWhen(res => timer(5 * 1000))
-  //       )
-  //     ), catchError(error => {
-  //       this.loadingAlert.dismiss();
-  //       this.presentAlert(error['status']);
-  //       return throwError('Could not check scan state!: ' + JSON.stringify(error));
-  //     })
-  //   )
-  // };
+        return data;
+      }),
+      retryWhen(errors =>
+        errors.pipe(
+          //log error message
+          tap(res => console.log(`Did not receive chairparts data! Waiting...`)),
+          //restart in 5 seconds
+          delayWhen(res => timer(5 * 1000))
+        )
+      ), catchError(error => {
+        this.loadingAlert.dismiss();
+        this.presentAlert(error['status']);
+        return throwError('Could not get chair parts!: ' + JSON.stringify(error));
+      })
+    )
+  };
+
+  produceChairPart(scan: Scan, part: string): Observable<any> {
+    let headers: HttpHeaders = new HttpHeaders();
+    headers = headers.append('Accept', 'application/json');
+    headers = headers.append('Content-Type', 'application/json');
+    // console.log("got id: " + scan.id);
+    let body = JSON.stringify({ vr_id: scan.id, part: part });
+    // console.log("checkScanState() json body to send:", body);
+
+    return this.httpClient.post<any>(
+      'http://192.168.0.196:5000/produce',
+      body,
+      { headers: headers }
+    ).pipe(
+      map((data: ChairParts) => {
+        console.log('Received data from /produce' + JSON.stringify(data));
+        // console.log('Scan state value: ' + JSON.stringify(data[0].state));
+        // this.currentChairParts = data['length_data'];
+        // this.loadingAlert.dismiss();
+
+        return data;
+      }),
+      retryWhen(errors =>
+        errors.pipe(
+          //log error message
+          tap(res => console.log(`Did not receive chairparts data! Waiting...`)),
+          //restart in 5 seconds
+          delayWhen(res => timer(5 * 1000))
+        )
+      ), catchError(error => {
+        this.loadingAlert.dismiss();
+        this.presentAlert(error['status']);
+        return throwError('Could not produce!: ' + JSON.stringify(error));
+      })
+    )
+  };
 
   reset() {
     this.currentScan = new Scan();
     this.currentMeasurements = new Measurements();
     this.currentChair = new Chair();
+    this.currentChairParts = new ChairParts();
   }
 
   async presentAlert(error: string) {
