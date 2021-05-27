@@ -17,4 +17,4 @@ import { ModalNewScanPage } from './modal-new-scan.page';
   ],
   declarations: [ModalNewScanPage]
 })
-export class ModalNewScanPageModule {}
+export class ModalNewScanPageModule { }

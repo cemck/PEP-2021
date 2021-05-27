@@ -8,6 +8,8 @@ import { ModalScanResultPageRoutingModule } from './modal-scan-result-routing.mo
 
 import { ModalScanResultPage } from './modal-scan-result.page';
 
+import { SceneGraph } from '../../components/scenegraph/scenegraph.component'
+
 @NgModule({
   imports: [
     CommonModule,
@@ -15,6 +17,9 @@ import { ModalScanResultPage } from './modal-scan-result.page';
     IonicModule,
     ModalScanResultPageRoutingModule
   ],
-  declarations: [ModalScanResultPage]
+  declarations: [
+    ModalScanResultPage,
+    SceneGraph
+  ]
 })
-export class ModalScanResultPageModule {}
+export class ModalScanResultPageModule { }
