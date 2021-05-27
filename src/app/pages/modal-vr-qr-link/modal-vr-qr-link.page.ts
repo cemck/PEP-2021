@@ -26,10 +26,10 @@ export class ModalVrQrLinkPage implements OnInit {
 
   constructor(
     private modalController: ModalController,
-    public loadingController: LoadingController,
+    private loadingController: LoadingController,
     private nav: IonNav,
     public platform: Platform,
-    public scanService: ScanService,
+    private scanService: ScanService,
     private iab: InAppBrowser,
     private browserTab: BrowserTab,
   ) { }
@@ -122,6 +122,10 @@ export class ModalVrQrLinkPage implements OnInit {
         }
       })
     );
+  }
+
+  getScanStatusText(): string {
+    return this.scanService.statusText;
   }
 
   async presentLoading() {

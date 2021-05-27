@@ -1,7 +1,7 @@
 import { Injectable } from '@angular/core';
 import { HttpClient, HttpHeaders } from '@angular/common/http';
 import { Observable, of, throwError, timer } from 'rxjs';
-import { map, catchError, tap, retryWhen, delayWhen } from 'rxjs/operators';
+import { map, catchError, tap, retryWhen, delayWhen, retry } from 'rxjs/operators';
 import { AlertController, LoadingController, Platform } from '@ionic/angular';
 import { InAppBrowser } from '@ionic-native/in-app-browser/ngx';
 import { BrowserTab } from '@ionic-native/browser-tab/ngx';
@@ -228,17 +228,19 @@ export class ScanService {
 
         return data;
       }),
-      retryWhen(errors =>
-        errors.pipe(
-          //log error message
-          tap(res => console.log(`Did not receive chairparts data! Waiting...`)),
-          //restart in 5 seconds
-          delayWhen(res => timer(5 * 1000))
-        )
-      ), catchError(error => {
+      retry(5),
+      // retryWhen(errors =>
+      //   errors.pipe(
+      //     //log error message
+      //     tap(res => console.log(`Did not receive chair part length data! Waiting...`)),
+      //     //restart in 5 seconds
+      //     // delayWhen(res => timer(5 * 1000))
+      //   )
+      // )
+      catchError(error => {
         this.loadingAlert.dismiss();
         this.presentAlert(error['status']);
-        return throwError('Could not get chair parts!: ' + JSON.stringify(error));
+        return throwError('Could not get chair part lengths!: ' + JSON.stringify(error));
       })
     )
   };
@@ -263,15 +265,7 @@ export class ScanService {
         // this.loadingAlert.dismiss();
 
         return data;
-      }),
-      retryWhen(errors =>
-        errors.pipe(
-          //log error message
-          tap(res => console.log(`Did not receive chairparts data! Waiting...`)),
-          //restart in 5 seconds
-          delayWhen(res => timer(5 * 1000))
-        )
-      ), catchError(error => {
+      }), catchError(error => {
         this.loadingAlert.dismiss();
         this.presentAlert(error['status']);
         return throwError('Could not produce!: ' + JSON.stringify(error));

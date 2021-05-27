@@ -9,3 +9,28 @@
     // // --box-shadow: none;
     // margin: 20px;
 }
+
+/* Set the width to the full container and center the content */
+// ion-select {
+//     width: 100%;
+
+//     justify-content: center;
+// }
+
+// ion-select {
+//     --offset-bottom: auto!important;
+//     --overflow: hidden;
+//     overflow: auto;
+//     &::-webkit-scrollbar {
+//         display: none;
+//     }
+// }
+
+// ion-select::part(scroll)::-webkit-scrollbar {
+//     display: none;
+// }
+// // Hide scrollbar for IE, Edge and Firefox
+// ion-select::part(scroll) {
+//     -ms-overflow-style: none; // IE and Edge
+//     scrollbar-width: none; // Firefox
+// }

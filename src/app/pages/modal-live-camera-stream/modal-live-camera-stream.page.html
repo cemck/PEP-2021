@@ -1,0 +1,29 @@
+<ion-header>
+  <ion-toolbar color="light">
+    <ion-buttons slot="start">
+      <ion-button (click)="close()" *ngIf="level == 0">
+        <ion-icon slot="icon-only" name="close"></ion-icon>
+      </ion-button>
+      <ion-back-button *ngIf="level > 0"></ion-back-button>
+    </ion-buttons>
+    <ion-title>ModalLiveCameraStream Page</ion-title>
+  </ion-toolbar>
+</ion-header>
+
+<ion-content>
+  <div *ngIf="!this.platform.is('mobile')">
+    <vg-player>
+      <video [vgMedia]="$any(media)" #media id="singleVideo" preload="auto" controls>
+        <source src="http://static.videogular.com/assets/videos/videogular.mp4" type="video/mp4">
+      </video>
+    </vg-player>
+  </div>
+
+  <div *ngIf="this.platform.is('mobile')">
+    <ion-button color="secondary" (click)="openVideoPlayer()">Show Live Stream Video</ion-button>
+
+    <video width="auto" height="100%" controls="controls" autoplay="true">
+      <source src="http://static.videogular.com/assets/videos/videogular.mp4" type="video/mp4" />
+    </video>
+  </div>
+</ion-content>

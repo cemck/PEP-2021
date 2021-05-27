@@ -52,7 +52,7 @@
 
     <ion-item>
       <ion-label>Part</ion-label>
-      <ion-select interface="popover">
+      <ion-select [ngModel]="selectedPart" (ionChange)="selectedPartChanged($event)" interface="popover" placeholder="Select Part">
         <ion-select-option value="OgR">OgR</ion-select-option>
         <ion-select-option value="OgL">OgL</ion-select-option>
         <ion-select-option value="UgR">UgR</ion-select-option>

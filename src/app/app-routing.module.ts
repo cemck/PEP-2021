@@ -31,6 +31,10 @@ const routes: Routes = [
     path: 'modal-chair-parts',
     loadChildren: () => import('./pages/modal-chair-parts/modal-chair-parts.module').then( m => m.ModalChairPartsPageModule)
   },
+  {
+    path: 'modal-live-camera-stream',
+    loadChildren: () => import('./pages/modal-live-camera-stream/modal-live-camera-stream.module').then( m => m.ModalLiveCameraStreamPageModule)
+  },
 ];
 
 @NgModule({

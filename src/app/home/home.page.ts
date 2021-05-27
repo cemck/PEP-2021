@@ -1,8 +1,7 @@
 import { Component } from '@angular/core';
-import { ModalController, IonRouterOutlet } from '@ionic/angular';
+import { Platform, ModalController, IonRouterOutlet } from '@ionic/angular';
 import { ModalBaseComponent } from '../components/modal-base/modal-base.component';
 import { ModalNewScanPage } from '../pages/modal-new-scan/modal-new-scan.page';
-import { Platform } from '@ionic/angular';
 import { StatusBar } from '@ionic-native/status-bar/ngx';
 import * as delay from 'delay';
 

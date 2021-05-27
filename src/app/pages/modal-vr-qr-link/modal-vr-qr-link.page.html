@@ -18,13 +18,13 @@
         <ion-col class="ion-text-center ion-align-self-center" size="12" size-sm>
           <div class="vertical">
 
-            <ion-img *ngIf="!this.platform.is('mobile') && (this.scanService.statusText == null)" [src]="convertedImage"></ion-img>
-            <h5 *ngIf="this.scanService.statusText == null">Please proceed to Mobilescan.me in order to complete the scan process.</h5>
-            <h5 *ngIf="this.scanService.statusText">{{this.scanService.statusText}}</h5>
+            <ion-img *ngIf="!this.platform.is('mobile') && (getScanStatusText() == null)" [src]="convertedImage"></ion-img>
+            <h5 *ngIf="getScanStatusText() == null">Please proceed to Mobilescan.me in order to complete the scan process.</h5>
+            <h5 *ngIf="getScanStatusText()">{{getScanStatusText()}}</h5>
 
             <ion-spinner *ngIf="this.showSpinner"></ion-spinner>
 
-            <div *ngIf="this.platform.is('mobile') && (this.scanService.statusText == null) && showOpenBrowserButton">
+            <div *ngIf="this.platform.is('mobile') && (getScanStatusText() == null) && showOpenBrowserButton">
               <ion-text color="danger">
                 <h6 *ngIf="this.platform.is('mobile')">Info: Make sure to disable Pop-Up blocking in your browser
                   settings if no window is showing up.</h6>
