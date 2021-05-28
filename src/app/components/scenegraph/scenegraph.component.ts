@@ -1,4 +1,4 @@
-import { Component, Input, ElementRef } from '@angular/core';
+import { Component, Input, ElementRef, ViewChild } from '@angular/core';
 import * as THREE from 'three';
 import { Color, Object3D, Vector3 } from 'three';
 import { STLLoader } from 'three/examples/jsm/loaders/STLLoader'
@@ -6,7 +6,7 @@ import { OrbitControls } from 'three/examples/jsm/controls/OrbitControls'
 
 @Component({
   selector: 'scenegraph',
-  template: '<div style="width:100%; height:50%"></div>',
+  template: '<div #container style="width:100%; height:100%"></div>',
   // templateUrl: './scenegraph.component.html',
   // styleUrls: ['./scenegraph.component.scss'],
 })
@@ -15,6 +15,9 @@ export class SceneGraph {
 
   @Input()
   geometry: string;
+
+  @ViewChild("container")
+  containerDiv: ElementRef;
 
   url: string;
   renderer: THREE.WebGLRenderer;
@@ -37,6 +40,10 @@ export class SceneGraph {
     // this.renderer.setClearColor(new Color('white'), 0.1);
     this.renderer.setPixelRatio(window.devicePixelRatio);
     this.renderer.setSize(window.innerWidth, height);
+    console.log('parentNode: ', this.sceneGraphElement.nativeElement.parentNode);
+
+    // console.log('children: ', this.sceneGraphElement.nativeElement.children);
+    // console.log('height: ', this.containerDiv.nativeElement.offsetHeight);
     this.renderer.shadowMap.enabled = true;
 
     this.scene = new THREE.Scene();
@@ -64,7 +71,7 @@ export class SceneGraph {
     this.controls.enablePan = false;
     this.controls.enableDamping = true;
     this.controls.autoRotate = true;
-    this.controls.autoRotateSpeed = 1;
+    this.controls.autoRotateSpeed = 2;
 
     const hemiLight = new THREE.HemisphereLight(0xfffff, 0xfffff, 1);
     hemiLight.color.setHSL(0.5, 0, 0.6);
@@ -123,7 +130,7 @@ export class SceneGraph {
       // console.log(this.mesh);
       this.mesh.position.set(-20, -20, 0);
       this.mesh.rotation.x = -0.5 * Math.PI;
-      this.mesh.scale.set(0.1, 0.1, 0.1);
+      this.mesh.scale.set(0.2, 0.2, 0.2);
       this.mesh.castShadow = true;
       this.mesh.receiveShadow = true;
       this.scene.add(this.mesh);
@@ -135,9 +142,9 @@ export class SceneGraph {
 
     //controls.update() must be called after any manual changes to the camera's transform
     // position and point the camera to the center of the scene
-    this.camera.position.x = 150;
-    this.camera.position.y = 150;
-    this.camera.position.z = 150;
+    this.camera.position.x = 400;
+    this.camera.position.y = 80;
+    this.camera.position.z = 400;
     this.camera.lookAt(new Vector3(0, 40, 0));
 
 
@@ -165,5 +172,16 @@ export class SceneGraph {
     this.renderer.render(this.scene, this.camera);
     if (this.animating) { requestAnimationFrame(() => { this.render() }); };
   }
+
+  // onWindowResize() {
+
+  //   this.camera.aspect = window.innerWidth / window.innerHeight;
+  //   this.camera.updateProjectionMatrix();
+
+  //   this.renderer.setSize( window.innerWidth, window.innerHeight );
+
+  //   render();
+
+  // }
 
 }

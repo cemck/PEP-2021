@@ -19,7 +19,7 @@
           <div class="vertical">
 
             <ion-img *ngIf="!this.platform.is('mobile') && (getScanStatusText() == null)" [src]="convertedImage"></ion-img>
-            <h5 *ngIf="getScanStatusText() == null">Please proceed to Mobilescan.me in order to complete the scan process.</h5>
+            <h5 *ngIf="getScanStatusText() == null">Schließe den Scan Vorgang auf der Mobilescan.me Website ab, um fortfahren zu können.</h5>
             <h5 *ngIf="getScanStatusText()">{{getScanStatusText()}}</h5>
 
             <ion-spinner *ngIf="this.showSpinner"></ion-spinner>
@@ -32,7 +32,7 @@
 
               <ion-button expand="block" (click)="openBrowser()">
                 <ion-icon slot="start" name="open-outline"></ion-icon>
-                Open Mobilescan.me
+                Mobilescan.me Öffnen
               </ion-button>
             </div>
 

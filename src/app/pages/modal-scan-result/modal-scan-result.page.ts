@@ -12,7 +12,7 @@ import { SceneGraph } from '../../components/scenegraph/scenegraph.component'
   styleUrls: ['./modal-scan-result.page.scss'],
 })
 export class ModalScanResultPage implements OnInit {
-  level = 2;
+  level = 0;
   nextPage = ModalChairPartsPage;
   private subscription: Subscription = new Subscription();
   alert: HTMLIonAlertElement;
@@ -61,7 +61,9 @@ export class ModalScanResultPage implements OnInit {
   }
 
   close() {
-    this.modalController.dismiss();
+    // this.modalController.dismiss();
+    this.scanService.reset();
+    this.goRoot();
   }
 
   getCurrentMeasurements(): Measurements {
@@ -85,6 +87,10 @@ export class ModalScanResultPage implements OnInit {
   restartScan() {
     this.scanService.reset();
     this.goRoot();
+  }
+
+  segmentChanged($event) {
+    console.log('segmentChanged with: ', $event);
   }
 
   async presentAlert() {

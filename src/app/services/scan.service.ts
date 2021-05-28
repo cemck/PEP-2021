@@ -1,6 +1,6 @@
 import { Injectable } from '@angular/core';
 import { HttpClient, HttpHeaders } from '@angular/common/http';
-import { Observable, of, throwError, timer } from 'rxjs';
+import { Observable, throwError, timer } from 'rxjs';
 import { map, catchError, tap, retryWhen, delayWhen, retry } from 'rxjs/operators';
 import { AlertController, LoadingController, Platform } from '@ionic/angular';
 import { InAppBrowser } from '@ionic-native/in-app-browser/ngx';
@@ -51,6 +51,8 @@ export class ScanService {
   statusText: string = null;
   currentChair: Chair = new Chair();
   currentChairParts: ChairParts = new ChairParts();
+  api_url: string = 'https://api-pep2021.azurewebsites.net'
+  // api_url: string = 'http://192.168.0.196:5000'
 
   constructor(
     private httpClient: HttpClient,
@@ -73,7 +75,7 @@ export class ScanService {
     let body = JSON.stringify({ username });
 
     return this.httpClient.post<Scan>(
-      'http://192.168.0.196:5000/createscan',
+      this.api_url + '/createscan',
       body,
       { headers: headers }
     ).pipe(
@@ -100,7 +102,7 @@ export class ScanService {
     // console.log("checkScanState() json body to send:", body);
 
     return this.httpClient.post<Scan[]>(
-      'http://192.168.0.196:5000/checkstate',
+      this.api_url + '/checkstate',
       body,
       { headers: headers }
     ).pipe(
@@ -157,7 +159,7 @@ export class ScanService {
     console.log("getMeasurements() json body to send:", body);
 
     return this.httpClient.post<Measurements>(
-      'http://192.168.0.196:5000/extrameasurement',
+      this.api_url + '/extrameasurement',
       body,
       { headers: headers }
     ).pipe(
@@ -187,7 +189,7 @@ export class ScanService {
     // console.log("getMeasurements() json body to send:", body);
 
     return this.httpClient.post<Measurements>(
-      'http://192.168.0.196:5000/measurements',
+      this.api_url + '/measurements',
       body,
       { headers: headers }
     ).pipe(
@@ -216,7 +218,7 @@ export class ScanService {
     // console.log("checkScanState() json body to send:", body);
 
     return this.httpClient.post<ChairParts>(
-      'http://192.168.0.196:5000/chair_pipe_lengths',
+      this.api_url + '/chair_pipe_lengths',
       body,
       { headers: headers }
     ).pipe(
@@ -228,15 +230,14 @@ export class ScanService {
 
         return data;
       }),
-      retry(5),
-      // retryWhen(errors =>
-      //   errors.pipe(
-      //     //log error message
-      //     tap(res => console.log(`Did not receive chair part length data! Waiting...`)),
-      //     //restart in 5 seconds
-      //     // delayWhen(res => timer(5 * 1000))
-      //   )
-      // )
+      retryWhen(errors =>
+        errors.pipe(
+          //log error message
+          tap(res => console.log(`Did not receive chair part length data! Waiting...`)),
+          //restart in 5 seconds
+          delayWhen(res => timer(5 * 1000))
+        )
+      ),
       catchError(error => {
         this.loadingAlert.dismiss();
         this.presentAlert(error['status']);
@@ -254,7 +255,7 @@ export class ScanService {
     // console.log("checkScanState() json body to send:", body);
 
     return this.httpClient.post<any>(
-      'http://192.168.0.196:5000/produce',
+      this.api_url + '/produce',
       body,
       { headers: headers }
     ).pipe(

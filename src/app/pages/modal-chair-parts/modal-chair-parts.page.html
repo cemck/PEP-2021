@@ -6,7 +6,7 @@
       </ion-button>
       <ion-back-button *ngIf="level > 0"></ion-back-button> -->
     <!-- </ion-buttons> -->
-    <ion-title>ModalChairPart Page</ion-title>
+    <ion-title>Bauteil auswählen</ion-title>
   </ion-toolbar>
 </ion-header>
 
@@ -14,27 +14,27 @@
 
   <ion-list>
     <ion-list-header>
-      Measurements
+      Bauteillängen
     </ion-list-header>
 
     <ion-list lines="full">
       <ion-item>
-        <ion-label slot="start">{{ 'OgR:' }}</ion-label>
+        <ion-label slot="start">{{ 'Obergestell Rechts' }}</ion-label>
         <ion-label class="ion-text-end">{{ this.getCurrentChairParts().OgR ? this.getCurrentChairParts().OgR.toFixed(2) : '--'}}</ion-label>
         <ion-label class="ion-text-end">{{ ' cm' }}</ion-label>
       </ion-item>
       <ion-item>
-        <ion-label slot="start">{{ 'OgL:' }}</ion-label>
+        <ion-label slot="start">{{ 'Obergestell Links' }}</ion-label>
         <ion-label class="ion-text-end">{{ this.getCurrentChairParts().OgL ? this.getCurrentChairParts().OgL.toFixed(2) : '--'}}</ion-label>
         <ion-label class="ion-text-end">{{ ' cm' }}</ion-label>
       </ion-item>
       <ion-item>
-        <ion-label slot="start">{{ 'UgR:' }}</ion-label>
+        <ion-label slot="start">{{ 'Untergestell Rechts' }}</ion-label>
         <ion-label class="ion-text-end">{{ this.getCurrentChairParts().UgR ? this.getCurrentChairParts().UgR.toFixed(2) : '--'}}</ion-label>
         <ion-label class="ion-text-end">{{ ' cm' }}</ion-label>
       </ion-item>
       <ion-item>
-        <ion-label slot="start">{{ 'UgL:' }}</ion-label>
+        <ion-label slot="start">{{ 'Untergestell Links' }}</ion-label>
         <ion-label class="ion-text-end">{{ this.getCurrentChairParts().UgL ? this.getCurrentChairParts().UgL.toFixed(2) : '--'}}</ion-label>
         <ion-label class="ion-text-end">{{ ' cm' }}</ion-label>
       </ion-item>
@@ -43,7 +43,7 @@
     <ion-list>
       <ion-list-header>
         <ion-label>
-          Select Chair Part to produce
+          Wähle das zu produzierende Bauteil
         </ion-label>
       </ion-list-header>
 
@@ -51,17 +51,17 @@
     </ion-list>
 
     <ion-item>
-      <ion-label>Part</ion-label>
+      <ion-label>Bauteil</ion-label>
       <ion-select [ngModel]="selectedPart" (ionChange)="selectedPartChanged($event)" interface="popover" placeholder="Select Part">
-        <ion-select-option value="OgR">OgR</ion-select-option>
-        <ion-select-option value="OgL">OgL</ion-select-option>
-        <ion-select-option value="UgR">UgR</ion-select-option>
-        <ion-select-option value="UgL">UgL</ion-select-option>
+        <ion-select-option value="OgR">Obergestell Rechts</ion-select-option>
+        <ion-select-option value="OgL">Obergestell Links</ion-select-option>
+        <ion-select-option value="UgR">Untergestell Rechts</ion-select-option>
+        <ion-select-option value="UgL">Untergestell Links</ion-select-option>
       </ion-select>
     </ion-item>
 
-    <ion-button color="secondary" (click)="confirmChairParts()" expand="block">Confirm</ion-button>
-    <ion-button color="light" (click)="restartScan()" expand="block">Retry</ion-button>
+    <ion-button color="secondary" (click)="confirmChairParts()" expand="block">Bestätigen</ion-button>
+    <ion-button color="light" (click)="restartScan()" expand="block">Neustarten</ion-button>
 
   </ion-list>
 
