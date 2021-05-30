@@ -1,10 +1,9 @@
-import { Component, OnInit, ViewChild } from '@angular/core';
-import { ModalController, AlertController, IonNav, Platform } from '@ionic/angular';
+import { Component, ElementRef, OnInit, ViewChild } from '@angular/core';
+import { AlertController, IonNav, Platform } from '@ionic/angular';
 import { Measurements, ScanService } from '../../services/scan.service';
 import { Subscription } from 'rxjs';
 import { InAppBrowser } from '@ionic-native/in-app-browser/ngx';
 import { ModalChairPartsPage } from '../modal-chair-parts/modal-chair-parts.page'
-import { SceneGraph } from '../../components/scenegraph/scenegraph.component'
 
 @Component({
   selector: 'app-modal-scan-result',
@@ -16,20 +15,18 @@ export class ModalScanResultPage implements OnInit {
   nextPage = ModalChairPartsPage;
   private subscription: Subscription = new Subscription();
   alert: HTMLIonAlertElement;
+  segment: string;
 
-  @ViewChild('scenegraph')
-  sceneGraph: SceneGraph;
-
-  constructor(
-    private modalController: ModalController,
+  public constructor(
     private alertController: AlertController,
     private nav: IonNav,
     private platform: Platform,
     private scanService: ScanService,
-    private iab: InAppBrowser
+    private iab: InAppBrowser,
   ) { }
 
-  ngOnInit() {
+  public ngOnInit() {
+    this.segment = 'chair';
     this.subscription.add(this.scanService.getMeasurements(this.scanService.currentScan).subscribe(async (data: Measurements) => {
       console.log('measurements from getMeasurements(): ', JSON.stringify(data));
     }, error => {
@@ -44,11 +41,7 @@ export class ModalScanResultPage implements OnInit {
   ionViewDidEnter() {
     this.nav.removeIndex(1);
     if (this.platform.is('mobile')) this.iab.create('pep2021://close', '_system').show(); // Reopen app after closing browser tab
-    this.sceneGraph.startAnimation();
-  }
-
-  ionViewDidLeave() {
-    this.sceneGraph.stopAnimation();
+    // console.log(this.segment)
   }
 
   goForward() {
@@ -89,8 +82,10 @@ export class ModalScanResultPage implements OnInit {
     this.goRoot();
   }
 
-  segmentChanged($event) {
-    console.log('segmentChanged with: ', $event);
+  segmentChanged(event: any) {
+    // console.log('segmentChanged with: ', event.detail.value);
+    this.segment = event.detail.value;
+    // console.log(this.segment);
   }
 
   async presentAlert() {

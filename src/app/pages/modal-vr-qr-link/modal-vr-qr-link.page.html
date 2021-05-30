@@ -22,11 +22,11 @@
             <h5 *ngIf="getScanStatusText() == null">Schließe den Scan Vorgang auf der Mobilescan.me Website ab, um fortfahren zu können.</h5>
             <h5 *ngIf="getScanStatusText()">{{getScanStatusText()}}</h5>
 
-            <ion-spinner *ngIf="this.showSpinner"></ion-spinner>
+            <ion-spinner *ngIf="this.showSpinner && this.hasScanLink()"></ion-spinner>
 
-            <div *ngIf="this.platform.is('mobile') && (getScanStatusText() == null) && showOpenBrowserButton">
+            <div *ngIf="this.platform.is('mobile') && showOpenBrowserButton && this.hasScanLink()">
               <ion-text color="danger">
-                <h6 *ngIf="this.platform.is('mobile')">Info: Make sure to disable Pop-Up blocking in your browser
+                <h6>Info: Make sure to disable Pop-Up blocking in your browser
                   settings if no window is showing up.</h6>
               </ion-text>
 

@@ -17,7 +17,6 @@ export class ModalVrQrLinkPage implements OnInit {
   private nextPage = ModalScanResultPage;
   private subscription: Subscription = new Subscription();
   showOpenBrowserButton = false;
-  loadingAlert: HTMLIonLoadingElement;
   showSpinner = true;
   convertedImage;
   iabOptions: InAppBrowserOptions = {
@@ -48,11 +47,20 @@ export class ModalVrQrLinkPage implements OnInit {
     this.scanService.statusText = null;
   }
 
-  ionViewDidEnter() {
+  async ionViewDidEnter() {
     // console.log('ionViewDidEnter');
     // this.showOpenBrowserButton = false;
-    if (this.platform.is('mobile')) this.presentLoading();
+    if (this.platform.is('mobile')) {
+      this.scanService.initLoadingAlert();
+      this.scanService.loadingAlert.present();
+    }
     this.scanService.statusText = null;
+
+    await this.scanService.loadingAlert.onDidDismiss().then(() => {
+      console.log('Loading dismissed');
+      this.showOpenBrowserButton = true;
+      this.scanService.loadingAlert.dismiss();
+    });
   }
 
   goForward() {
@@ -66,6 +74,11 @@ export class ModalVrQrLinkPage implements OnInit {
 
   close() {
     this.modalController.dismiss();
+  }
+
+  restartScan() {
+    this.scanService.reset();
+    this.goRoot();
   }
 
   createNewScan() {
@@ -82,15 +95,22 @@ export class ModalVrQrLinkPage implements OnInit {
           console.log('display currentScan qrcode:' + data.qrcode);
           this.continueToCheckState();
         }
+      }, error => {
+        console.log(error)
+        this.scanService.loadingAlert.dismiss();
       })
-    );
+    )
   }
 
   async openBrowser() {
     console.log('currentScan link:' + this.scanService.currentScan.link);
 
     if (this.scanService.currentScan.link == null) {
-      this.createNewScan();
+      // this.createNewScan();
+      this.scanService.loadingAlert.dismiss();
+      this.scanService.presentAlert('No Mobilescan.me link').then(() => {
+        this.restartScan();
+      });
       return;
     }
 
@@ -128,19 +148,7 @@ export class ModalVrQrLinkPage implements OnInit {
     return this.scanService.statusText;
   }
 
-  async presentLoading() {
-    this.loadingAlert = await this.loadingController.create({
-      // cssClass: 'my-custom-class',
-      message: 'Please wait...',
-      duration: 5000,
-      // translucent: true,
-    });
-    await this.loadingAlert.present();
-
-    await this.loadingAlert.onDidDismiss().then(() => {
-      console.log('Loading dismissed');
-      this.showOpenBrowserButton = true;
-      this.scanService.loadingAlert.dismiss();
-    });
+  hasScanLink(): boolean {
+    return this.scanService.currentScan.link == undefined ? false : true;
   }
 }

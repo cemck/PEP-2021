@@ -1,7 +1,7 @@
 import { Injectable } from '@angular/core';
 import { HttpClient, HttpHeaders } from '@angular/common/http';
 import { Observable, throwError, timer } from 'rxjs';
-import { map, catchError, tap, retryWhen, delayWhen, retry } from 'rxjs/operators';
+import { map, catchError, tap, retryWhen, delayWhen, retry, timeout } from 'rxjs/operators';
 import { AlertController, LoadingController, Platform } from '@ionic/angular';
 import { InAppBrowser } from '@ionic-native/in-app-browser/ngx';
 import { BrowserTab } from '@ionic-native/browser-tab/ngx';
@@ -52,7 +52,7 @@ export class ScanService {
   currentChair: Chair = new Chair();
   currentChairParts: ChairParts = new ChairParts();
   api_url: string = 'https://api-pep2021.azurewebsites.net'
-  // api_url: string = 'http://192.168.0.196:5000'
+  // api_url: string = 'http://141.99.133.109:5000';
 
   constructor(
     private httpClient: HttpClient,
@@ -86,8 +86,9 @@ export class ScanService {
         //   console.log('state from checkScanState(): ', state);
         // });
         return data;
-      }), catchError(error => {
-        this.presentAlert(error['status']);
+      }), timeout(8000),
+      catchError(error => {
+        this.presentAlert(error['status'] ? error['status'] : error['name']);
         return throwError('Could not create a new scan!: ' + JSON.stringify(error));
       })
     )
@@ -281,12 +282,13 @@ export class ScanService {
     this.currentChairParts = new ChairParts();
   }
 
-  async presentAlert(error: string) {
+  async presentAlert(error?: string) {
     this.errorAlert = await this.alertController.create({
       // cssClass: 'my-custom-class',
-      header: error + ' Error',
+      backdropDismiss: false,
+      header: error,
       subHeader: 'Could not connect to API.',
-      message: 'Please check your network connection.',
+      message: 'Please check your network connection and try again.',
       buttons: ['OK']
     });
 
@@ -299,8 +301,8 @@ export class ScanService {
   async initLoadingAlert() {
     this.loadingAlert = await this.loadingController.create({
       // cssClass: 'my-custom-class',
-      message: 'Please wait...',
-      // duration: 5000,
+      message: 'Lade...',
+      duration: 5000,
       // translucent: true,
     });
 
