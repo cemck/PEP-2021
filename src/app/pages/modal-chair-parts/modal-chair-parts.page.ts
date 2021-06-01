@@ -3,6 +3,7 @@ import { ModalController, AlertController, IonNav, Platform } from '@ionic/angul
 import { ChairParts, ScanService } from '../../services/scan.service';
 import { Subscription } from 'rxjs';
 import { ModalLiveCameraStreamPage } from './../modal-live-camera-stream/modal-live-camera-stream.page';
+import { EngineService } from '../../engine/engine.service';
 
 @Component({
   selector: 'app-modal-chair-parts',
@@ -21,10 +22,12 @@ export class ModalChairPartsPage implements OnInit {
     private alertController: AlertController,
     private nav: IonNav,
     private platform: Platform,
-    private scanService: ScanService
+    private scanService: ScanService,
+    private engineService: EngineService,
   ) { }
 
   ngOnInit() {
+    this.engineService.part = 'chair';
     this.subscription.add(this.scanService.getChairParts(this.scanService.currentScan).subscribe(async (data: ChairParts) => {
       console.log('chair parts from getChairParts(): ', JSON.stringify(data));
     }, error => {
@@ -65,6 +68,8 @@ export class ModalChairPartsPage implements OnInit {
   selectedPartChanged($event) {
     console.log('selectedPartChanged to: ', $event.detail.value);
     this.selectedPart = $event.detail.value;
+    this.engineService.part = this.selectedPart;
+    this.engineService.updateChairModel();
   }
 
   confirmChairParts() {

@@ -3,7 +3,8 @@ import { AlertController, IonNav, Platform } from '@ionic/angular';
 import { Measurements, ScanService } from '../../services/scan.service';
 import { Subscription } from 'rxjs';
 import { InAppBrowser } from '@ionic-native/in-app-browser/ngx';
-import { ModalChairPartsPage } from '../modal-chair-parts/modal-chair-parts.page'
+import { ModalChairPartsPage } from '../modal-chair-parts/modal-chair-parts.page';
+import { EngineService } from '../../engine/engine.service';
 
 @Component({
   selector: 'app-modal-scan-result',
@@ -23,10 +24,12 @@ export class ModalScanResultPage implements OnInit {
     private platform: Platform,
     private scanService: ScanService,
     private iab: InAppBrowser,
+    private engineService: EngineService,
   ) { }
 
   public ngOnInit() {
     this.segment = 'chair';
+    this.engineService.part = 'chair';
     this.subscription.add(this.scanService.getMeasurements(this.scanService.currentScan).subscribe(async (data: Measurements) => {
       console.log('measurements from getMeasurements(): ', JSON.stringify(data));
     }, error => {
@@ -38,10 +41,13 @@ export class ModalScanResultPage implements OnInit {
     this.subscription.unsubscribe();
   }
 
+  ionViewWillEnter() {
+    this.engineService.resize();
+  }
+
   ionViewDidEnter() {
     this.nav.removeIndex(1);
     if (this.platform.is('mobile')) this.iab.create('pep2021://close', '_system').show(); // Reopen app after closing browser tab
-    // console.log(this.segment)
   }
 
   goForward() {
@@ -54,7 +60,6 @@ export class ModalScanResultPage implements OnInit {
   }
 
   close() {
-    // this.modalController.dismiss();
     this.scanService.reset();
     this.goRoot();
   }
@@ -86,6 +91,7 @@ export class ModalScanResultPage implements OnInit {
     // console.log('segmentChanged with: ', event.detail.value);
     this.segment = event.detail.value;
     // console.log(this.segment);
+    // this.engineService.resize();
   }
 
   async presentAlert() {

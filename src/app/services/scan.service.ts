@@ -173,7 +173,16 @@ export class ScanService {
         //   console.log('state from checkScanState(): ', state);
         // });
         return data;
-      }), catchError(error => {
+      }),
+      retryWhen(errors =>
+        errors.pipe(
+          //log error message
+          tap(res => console.log(`Could not get measurement data. Retrying...`)),
+          //restart in 5 seconds
+          delayWhen(res => timer(5 * 1000))
+        )
+      ), timeout(8000),
+      catchError(error => {
         this.loadingAlert.dismiss();
         this.presentAlert(error['status']);
         return throwError('Could not get measurements!: ' + JSON.stringify(error));
@@ -202,7 +211,16 @@ export class ScanService {
         //   console.log('state from checkScanState(): ', state);
         // });
         return data;
-      }), catchError(error => {
+      }),
+      retryWhen(errors =>
+        errors.pipe(
+          //log error message
+          tap(res => console.log(`Could not confirm measurement data. Retrying...`)),
+          //restart in 5 seconds
+          delayWhen(res => timer(5 * 1000))
+        )
+      ), timeout(8000),
+      catchError(error => {
         this.loadingAlert.dismiss();
         this.presentAlert(error['status']);
         return throwError('Could not confirm measurements!: ' + JSON.stringify(error));
@@ -226,7 +244,12 @@ export class ScanService {
       map((data: ChairParts) => {
         console.log('Received data from /chair_pipe_lengths' + JSON.stringify(data));
         // console.log('Scan state value: ' + JSON.stringify(data[0].state));
-        this.currentChairParts = data['length_data'];
+        this.currentChairParts = {
+          OgR: data['length_data']['OgR'] / 10,
+          OgL: data['length_data']['OgR'] / 10,
+          UgR: data['length_data']['UgR'] / 10,
+          UgL: data['length_data']['UgL'] / 10
+        };
         // this.loadingAlert.dismiss();
 
         return data;
@@ -238,7 +261,7 @@ export class ScanService {
           //restart in 5 seconds
           delayWhen(res => timer(5 * 1000))
         )
-      ),
+      ), timeout(8000),
       catchError(error => {
         this.loadingAlert.dismiss();
         this.presentAlert(error['status']);
@@ -267,7 +290,16 @@ export class ScanService {
         // this.loadingAlert.dismiss();
 
         return data;
-      }), catchError(error => {
+      }),
+      retryWhen(errors =>
+        errors.pipe(
+          //log error message
+          tap(res => console.log(`Could not create produce task. Retrying...`)),
+          //restart in 5 seconds
+          delayWhen(res => timer(5 * 1000))
+        )
+      ), timeout(8000),
+      catchError(error => {
         this.loadingAlert.dismiss();
         this.presentAlert(error['status']);
         return throwError('Could not produce!: ' + JSON.stringify(error));

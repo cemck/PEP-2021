@@ -16,7 +16,7 @@ export class EngineComponent implements OnInit {
   public ngOnInit(): void {
     console.log(this.rendererCanvas);
     this.engServ.createScene(this.rendererCanvas).then(value => {
-      console.log('scene created', value);
+      // console.log('scene created', value);
       if (value) {
         this.engServ.animate();
       }

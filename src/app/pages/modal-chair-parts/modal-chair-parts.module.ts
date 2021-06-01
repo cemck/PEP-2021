@@ -8,13 +8,16 @@ import { ModalChairPartsPageRoutingModule } from './modal-chair-parts-routing.mo
 
 import { ModalChairPartsPage } from './modal-chair-parts.page';
 
+import { EngineComponentModule } from '../../engine/engine.component.module';
+
 @NgModule({
   imports: [
     CommonModule,
     FormsModule,
     IonicModule,
-    ModalChairPartsPageRoutingModule
+    ModalChairPartsPageRoutingModule,
+    EngineComponentModule
   ],
   declarations: [ModalChairPartsPage]
 })
-export class ModalChairPartsPageModule {}
+export class ModalChairPartsPageModule { }

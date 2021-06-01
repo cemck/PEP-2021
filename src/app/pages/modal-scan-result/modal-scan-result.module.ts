@@ -8,7 +8,7 @@ import { ModalScanResultPageRoutingModule } from './modal-scan-result-routing.mo
 
 import { ModalScanResultPage } from './modal-scan-result.page';
 
-import { EngineComponent } from '../../engine/engine.component';
+import { EngineComponentModule } from '../../engine/engine.component.module';
 
 @NgModule({
   imports: [
@@ -16,10 +16,10 @@ import { EngineComponent } from '../../engine/engine.component';
     FormsModule,
     IonicModule,
     ModalScanResultPageRoutingModule,
+    EngineComponentModule
   ],
   declarations: [
     ModalScanResultPage,
-    EngineComponent
   ]
 })
 export class ModalScanResultPageModule { }
