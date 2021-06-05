@@ -31,8 +31,8 @@
       <app-engine></app-engine>
 
       <div [ngClass]="{'medium_margin': width >= 567, 'small_margin': width < 567 }">
-        <ion-list class="list_padding">
-          <ion-item>
+        <ion-list class="list_padding" lines="none">
+          <ion-item class="item-background-color">
             <ion-label slot="start">{{ 'Sitzhöhe' }}</ion-label>
             <ion-row slot="end">
               <ion-col>
@@ -43,7 +43,7 @@
               </ion-col>
             </ion-row>
           </ion-item>
-          <ion-item>
+          <ion-item class="item-background-color">
             <ion-label slot="start">{{ 'Sitztiefe' }}</ion-label>
             <ion-row slot="end">
               <ion-col>
@@ -54,7 +54,7 @@
               </ion-col>
             </ion-row>
           </ion-item>
-          <ion-item>
+          <ion-item class="item-background-color">
             <ion-label slot="start">{{ 'Sitzbreite' }}</ion-label>
             <ion-row slot="end">
               <ion-col>
@@ -65,7 +65,7 @@
               </ion-col>
             </ion-row>
           </ion-item>
-          <ion-item>
+          <ion-item class="item-background-color">
             <ion-label slot="start">{{ 'Lehnenhöhe' }}</ion-label>
             <ion-row slot="end">
               <ion-col>
@@ -76,7 +76,7 @@
               </ion-col>
             </ion-row>
           </ion-item>
-          <ion-item>
+          <ion-item class="item-background-color">
             <ion-label slot="start">{{ 'Armlehnenhöhe' }}</ion-label>
             <ion-row slot="end">
               <ion-col>
@@ -92,9 +92,9 @@
     </div>
 
     <div *ngIf="this.segment === 'scan'">
-      <div [ngClass]="{'medium_margin': width >= 567, 'small_margin': width < 567 }">
-        <ion-list class="list_padding">
-          <ion-item>
+      <div [ngClass]="{'medium_margin_scan': width >= 567, 'small_margin': width < 567 }">
+        <ion-list class="list_padding" lines="none">
+          <ion-item class="item-background-color">
             <ion-label slot="start">{{ 'Körpertiefe' }}</ion-label>
             <ion-row slot="end">
               <ion-col>
@@ -105,7 +105,7 @@
               </ion-col>
             </ion-row>
           </ion-item>
-          <ion-item>
+          <ion-item class="item-background-color">
             <ion-label slot="start">{{ 'Körperbreite' }}</ion-label>
             <ion-row slot="end">
               <ion-col>
@@ -116,7 +116,7 @@
               </ion-col>
             </ion-row>
           </ion-item>
-          <ion-item>
+          <ion-item class="item-background-color">
             <ion-label slot="start">{{ 'Ellbogenhöhe' }}</ion-label>
             <ion-row slot="end">
               <ion-col>
@@ -127,7 +127,7 @@
               </ion-col>
             </ion-row>
           </ion-item>
-          <ion-item>
+          <ion-item class="item-background-color">
             <ion-label slot="start">{{ 'Unterschenkellänge' }}</ion-label>
             <ion-row slot="end">
               <ion-col>
@@ -139,7 +139,7 @@
               </ion-col>
             </ion-row>
           </ion-item>
-          <ion-item>
+          <ion-item class="item-background-color">
             <ion-label slot="start">{{ 'Schulterhöhe' }}</ion-label>
             <ion-row slot="end">
               <ion-col>
@@ -151,7 +151,7 @@
               </ion-col>
             </ion-row>
           </ion-item>
-          <ion-item>
+          <ion-item class="item-background-color">
             <ion-label slot="start">{{ 'Körpergröße' }}</ion-label>
             <ion-row slot="end">
               <ion-col>
@@ -169,8 +169,11 @@
     <ion-row class="ion-align-self-center ion-align-items-top" [ngClass]="{'medium_b_margin': height >= 1000, 'small_b_margin': height < 1000 }"
       style="flex-grow: 1;">
       <div class="vertical">
-        <ion-button color="primary" (click)="confirmMeasurements()">Bestätigen</ion-button>
-        <ion-button color="light" (click)="restartScan()">Neustarten</ion-button>
+        <ion-button color="primary" shape="round" class="big_b" (click)="confirmMeasurements()">
+          <ion-icon slot="start" name="checkmark"></ion-icon>
+          Bestätigen
+        </ion-button>
+        <ion-button color="light" shape="round" class="big_b" (click)="restartScan()">Neustarten</ion-button>
       </div>
     </ion-row>
     <!-- </ion-col> -->

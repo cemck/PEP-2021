@@ -21,8 +21,8 @@
         Bauteillängen
       </ion-list-header>
 
-      <ion-list class="list_padding" lines="full">
-        <ion-item>
+      <ion-list class="list_padding" lines="none">
+        <ion-item class="item-background-color">
           <ion-label slot="start">{{ 'Obergestell Rechts' }}</ion-label>
           <ion-row slot="end">
             <ion-col>
@@ -33,7 +33,7 @@
             </ion-col>
           </ion-row>
         </ion-item>
-        <ion-item>
+        <ion-item class="item-background-color">
           <ion-label slot="start">{{ 'Obergestell Links' }}</ion-label>
           <ion-row slot="end">
             <ion-col>
@@ -44,7 +44,7 @@
             </ion-col>
           </ion-row>
         </ion-item>
-        <ion-item>
+        <ion-item class="item-background-color">
           <ion-label slot="start">{{ 'Untergestell Rechts' }}</ion-label>
           <ion-row slot="end">
             <ion-col>
@@ -55,7 +55,7 @@
             </ion-col>
           </ion-row>
         </ion-item>
-        <ion-item>
+        <ion-item class="item-background-color">
           <ion-label slot="start">{{ 'Untergestell Links' }}</ion-label>
           <ion-row slot="end">
             <ion-col>
@@ -73,7 +73,7 @@
           Wähle das zu produzierende Bauteil aus
         </ion-label>
       </ion-list-header>
-      <ion-item>
+      <ion-item class="item-background-color">
         <ion-label>Bauteil</ion-label>
         <ion-select [ngModel]="selectedPart" (ionChange)="selectedPartChanged($event)" interface="popover" placeholder="Auswählen">
           <ion-select-option value="OgR">Obergestell Rechts</ion-select-option>
@@ -87,8 +87,11 @@
     <ion-row class="ion-align-self-center ion-align-items-top" [ngClass]="{'medium_b_margin': height >= 1000, 'small_b_margin': height < 1000 }"
       style="flex-grow: 1;">
       <div class="vertical">
-        <ion-button color="primary" (click)="confirmChairParts()">Bestätigen</ion-button>
-        <ion-button color="light" (click)="restartScan()">Neustarten</ion-button>
+        <ion-button color="primary" shape="round" class="big_b" (click)="confirmChairParts()">
+          <ion-icon slot="start" name="checkmark"></ion-icon>
+          Bestätigen
+        </ion-button>
+        <ion-button color="light" shape="round" class="big_b" (click)="restartScan()">Neustarten</ion-button>
       </div>
     </ion-row>
   </ion-grid>

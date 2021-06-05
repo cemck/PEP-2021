@@ -58,10 +58,10 @@ export class EngineService implements OnDestroy {
     this.scene.add(this.camera);
 
     const prefersDark = window.matchMedia('(prefers-color-scheme: dark)');
-    let color = prefersDark.matches ? 0xCCCCCC : 0x838383;
+    let color = prefersDark.matches ? 0xCCCCCC : 0xFFFFFF;
 
     // soft white light
-    this.light = new THREE.AmbientLight(0x404040);
+    this.light = new THREE.AmbientLight(0xFFFFFF);
     this.light.position.z = 10;
     this.scene.add(this.light);
 
@@ -76,8 +76,8 @@ export class EngineService implements OnDestroy {
     // let helper = new THREE.DirectionalLightHelper(this.dirLight);
     // this.scene.add(helper);
 
-    let axesHelper = new THREE.AxesHelper(5);
-    this.scene.add(axesHelper);
+    // let axesHelper = new THREE.AxesHelper(5);
+    // this.scene.add(axesHelper);
 
     this.controls = new OrbitControls(this.camera, this.renderer.domElement);
     this.controls.enableDamping = true;

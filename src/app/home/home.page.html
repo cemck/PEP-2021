@@ -25,30 +25,17 @@
   <!-- <ion-fab slot="fixed">
     <ion-fab-button color="primary">+</ion-fab-button>
   </ion-fab> -->
+  <ion-grid style="height: 100%; display: flex; flex-flow: column;">
 
-  <ion-list>
-    <ion-list-header>
-      Gescannte Daten
-    </ion-list-header>
-
-    <ion-item button *ngFor="let scan of scans" (click)="presentDetail()">
-      <ion-avatar slot="start" class="ios hydrated">
-        <!-- <img [src]="'https://upload.wikimedia.org/wikipedia/commons/' + country.flag"> -->
-      </ion-avatar>
-      <ion-label>
-        <ion-row>
-          <ion-col>
-            <h2>{{ scan.name }}</h2>
-          </ion-col>
-          <ion-col class="ion-text-end">
-            <h3>{{ scan.date }}</h3>
-          </ion-col>
-        </ion-row>
-        <p>Sitzhöhe: {{ scan.measurements[0] }} mm, Sitztiefe: {{ scan.measurements[1] }} mm, Sitzbreite: {{
-          scan.measurements[2] }} mm, Lehnenhöhe: {{ scan.measurements[3] }} mm, Armlehnenhöhe: {{ scan.measurements[4]
-          }} mm </p>
-      </ion-label>
-    </ion-item>
-  </ion-list>
+    <ion-row class="ion-align-self-center ion-align-items-center" style="flex-grow: 1;">
+      <div class="vertical">
+        <ion-button color="primary" fill='outline' shape="round" (click)="presentModal()" class="big_button">
+          <ion-icon slot="start" name="add"></ion-icon>
+          Neuer Scan
+        </ion-button>
+        <!-- <ion-button color="light" (click)="restartScan()">Neustarten</ion-button> -->
+      </div>
+    </ion-row>
+  </ion-grid>
 
 </ion-content>

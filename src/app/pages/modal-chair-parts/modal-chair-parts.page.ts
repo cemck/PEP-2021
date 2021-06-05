@@ -28,7 +28,7 @@ export class ModalChairPartsPage implements OnInit {
   ) { }
 
   ngOnInit() {
-    this.engineService.part = 'chair';
+    this.engineService.part = 'chair_clean';
     if (!this.isKinectScan) {
       this.subscription.add(this.scanService.getChairParts(this.scanService.currentScan).subscribe(async (data: ChairParts) => {
         console.log('chair parts from getChairParts(): ', JSON.stringify(data));
@@ -111,7 +111,7 @@ export class ModalChairPartsPage implements OnInit {
       // cssClass: 'my-custom-class',
       header: 'Error',
       // subHeader: 'The given data was invalid.',
-      message: 'Please retry the scan process.',
+      message: 'Ein Fehler ist aufgetreten. Bitte wiederhole den Scan Prozess.',
       buttons: ['OK']
     });
 
@@ -125,8 +125,8 @@ export class ModalChairPartsPage implements OnInit {
     this.alert = await this.alertController.create({
       // cssClass: 'my-custom-class',
       // header: 'Error',
-      subHeader: 'The given data was invalid.',
-      message: 'Please select a chair part to produce.',
+      subHeader: 'Info',
+      message: 'Bitte Bauteil auswählen.',
       buttons: ['OK']
     });
 

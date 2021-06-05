@@ -23,7 +23,7 @@
     <ion-row style=" height: 100%;">
 
       <ion-col [ngClass]="{ 'ion-text-end ion-align-self-center': width >= 576, 'ion-text-center ion-align-self-end': width < 576 }" size="12" size-sm>
-        <ion-button color="light" disable-hover fill="solid" size="large" class="sqare_button light rounded" (click)="presentKinectModal()">
+        <ion-button color="light" fill='solid' size="large" class="sqare_button light rounded" (click)="presentKinectModal()">
           <div class="vertical">
             <!-- <ion-img [src]="isStatusBarLight ? 'assets/xbox-kinect.png' : 'assets/xbox-kinect-light.png'" style="width: 140px; height: 70px;"></ion-img> -->
             <ion-icon name="logo-xbox" style="zoom:3.5;"></ion-icon>
@@ -34,7 +34,7 @@
       </ion-col>
 
       <ion-col [ngClass]="{ 'ion-text-start ion-align-self-center': width >= 576, 'ion-text-center ion-align-self-start': width < 576 }" size="12" size-sm>
-        <ion-button color="light" disable-hover fill="solid" size="large" class="sqare_button light rounded" (click)="presentVRModal()">
+        <ion-button color="light" fill='solid' size="large" class="sqare_button light rounded" (click)="presentVRModal()">
           <div class="vertical">
             <!-- <ion-icon slot="start" name="image" style="zoom:2.0;"></ion-icon> -->
             <ion-img src="assets/vr.png" style="width: 160px; height: 70px;"></ion-img>
