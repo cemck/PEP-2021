@@ -32,7 +32,12 @@ export class ModalScanResultPage implements OnInit {
     this.segment = 'chair';
     this.engineService.part = 'chair';
     console.log('isKinectScan :', this.isKinectScan)
-    if (!this.isKinectScan) {
+
+    if (this.isKinectScan == false) {
+      if (this.platform.is('mobile')) {
+        this.iab.create('pep2021://close', '_system').show(); // Reopen app after closing browser tab
+        console.log('shoudl have closed browser by now');
+      }
       this.subscription.add(this.scanService.getMeasurements(this.scanService.currentScan).subscribe(async (data: Measurements) => {
         console.log('measurements from getMeasurements(): ', JSON.stringify(data));
       }, error => {
@@ -51,9 +56,6 @@ export class ModalScanResultPage implements OnInit {
 
   ionViewDidEnter() {
     this.nav.removeIndex(1);
-    if (!this.isKinectScan) {
-      if (this.platform.is('mobile')) this.iab.create('pep2021://close', '_system').show(); // Reopen app after closing browser tab
-    }
   }
 
   goForward() {

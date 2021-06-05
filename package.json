@@ -109,8 +109,8 @@
       "cordova-plugin-streaming-media": {}
     },
     "platforms": [
-      "android",
-      "electron"
+      "electron",
+      "android"
     ]
   }
 }

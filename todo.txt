@@ -1,0 +1,1 @@
+- implement loading screen between modal screens in order to prevent showing the next page before http connection was made
