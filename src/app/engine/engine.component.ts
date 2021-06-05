@@ -23,6 +23,10 @@ export class EngineComponent implements OnInit {
     });
   }
 
+  public get progress(): number {
+    return this.engServ.loadingProgress;
+  }
+
   // public ngAfterViewInit(): void {
   //   console.log('ngAfterViewInit');
   //   console.log(this.rendererCanvas);

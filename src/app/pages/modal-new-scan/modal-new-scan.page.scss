@@ -15,7 +15,7 @@
     // --ripple-color: rgb(3, 3, 133);
     --padding-bottom: 2px !important;
     margin: 20px;
-    --box-shadow: 0px 10px 50px 10px var(--ion-color-light-shade);
+    // --box-shadow: 0px 10px 50px 10px var(--ion-color-light-shade);
 }
 .rounded {
     border-radius: 12px !important;
@@ -31,7 +31,7 @@
         // --ripple-color: rgb(3, 3, 133);
         --padding-bottom: 2px !important;
         margin: 20px;
-        --box-shadow: 0px 10px 50px 10px var(--ion-color-light-shade);
+        // --box-shadow: 0px 10px 50px 10px var(--ion-color-light-shade);
     }
 }
 @media (prefers-color-scheme: light) {
@@ -45,10 +45,10 @@
         --ripple-color: rgb(3, 3, 133);
         --padding-bottom: 2px !important;
         margin: 20px;
-        --box-shadow: 0px 10px 50px 10px var(--ion-color-light-shade);
+        // --box-shadow: 0px 10px 50px 10px var(--ion-color-light-shade);
     }
 }
 .sqare_button:hover {
     transform: translateY(-0.25em);
-    --box-shadow: 0px 30px 50px 10px var(--ion-color-light-shade);
+    --box-shadow: 0px 10px 50px 4px var(--ion-color-light-shade);
 }

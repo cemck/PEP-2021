@@ -3,6 +3,7 @@ import { ModalController, IonNav, Platform } from '@ionic/angular';
 import { ModalVrQrLinkPage } from '../modal-vr-qr-link/modal-vr-qr-link.page';
 import { ModalKinectPage } from '../modal-kinect/modal-kinect.page';
 import { StatusBar } from '@ionic-native/status-bar/ngx';
+import { ScanService } from '../../services/scan.service';
 
 @Component({
   selector: 'app-modal-new-scan',
@@ -19,7 +20,8 @@ export class ModalNewScanPage implements OnInit {
     private modalController: ModalController,
     private nav: IonNav,
     private platform: Platform,
-    private statusBar: StatusBar
+    private statusBar: StatusBar,
+    private scanService: ScanService,
   ) {
     this.addAndroidBackButtonSupport();
   }
@@ -63,6 +65,7 @@ export class ModalNewScanPage implements OnInit {
 
   goForward(kinect: boolean) {
     console.log('display VRQR page');
+    this.scanService.loadingAlert.present();
     if (kinect) {
       this.nav.push(this.nextPageKinect, { level: this.level + 1 });
     } else {

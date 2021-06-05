@@ -89,6 +89,7 @@ export class ModalScanResultPage implements OnInit {
   confirmMeasurements() {
     console.log('confirmed measurements');
     if (this.isKinectScan) {
+      this.scanService.loadingAlert.present();
       this.goForward();
     } else {
       this.subscription.add(
@@ -118,9 +119,9 @@ export class ModalScanResultPage implements OnInit {
   async presentAlert() {
     this.alert = await this.alertController.create({
       // cssClass: 'my-custom-class',
-      header: 'Error',
-      subHeader: 'The given data was invalid.',
-      message: 'Please retry the scan process.',
+      header: 'Fehler',
+      subHeader: 'Es ist etwas schief gelaufen.',
+      message: 'Bitte wiederhole den Scan Prozess.',
       buttons: ['OK']
     });
 

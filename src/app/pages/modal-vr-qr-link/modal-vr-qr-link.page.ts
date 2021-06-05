@@ -44,6 +44,7 @@ export class ModalVrQrLinkPage implements OnInit {
 
   ionViewWillEnter() {
     // console.log('ionViewWillEnter');
+    this.scanService.loadingAlert.dismiss();
     this.scanService.statusText = null;
   }
 

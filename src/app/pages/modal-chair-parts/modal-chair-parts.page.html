@@ -74,8 +74,9 @@
         </ion-label>
       </ion-list-header>
       <ion-item class="item-background-color">
-        <ion-label>Bauteil</ion-label>
-        <ion-select [ngModel]="selectedPart" (ionChange)="selectedPartChanged($event)" interface="popover" placeholder="Auswählen">
+        <ion-label position="fixed">Bauteil</ion-label>
+        <ion-select slot="end" style="max-width: 50%; width:100%;" [ngModel]="selectedPart" (ionChange)="selectedPartChanged($event)" interface="popover"
+          placeholder="Auswählen">
           <ion-select-option value="OgR">Obergestell Rechts</ion-select-option>
           <ion-select-option value="OgL">Obergestell Links</ion-select-option>
           <ion-select-option value="UgR">Untergestell Rechts</ion-select-option>
@@ -91,7 +92,7 @@
           <ion-icon slot="start" name="checkmark"></ion-icon>
           Bestätigen
         </ion-button>
-        <ion-button color="light" shape="round" class="big_b" (click)="restartScan()">Neustarten</ion-button>
+        <ion-button color="dark" shape="round" fill="outline" class="big_b" (click)="restartScan()">Neustarten</ion-button>
       </div>
     </ion-row>
   </ion-grid>

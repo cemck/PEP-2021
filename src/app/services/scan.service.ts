@@ -390,6 +390,7 @@ export class ScanService {
     this.currentMeasurements = new Measurements();
     this.currentChair = new Chair();
     this.currentChairParts = new ChairParts();
+    this.currentKinectScan = new KinectScan();
   }
 
   async presentAlert(error?: string) {

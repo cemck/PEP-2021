@@ -23,6 +23,8 @@ export class EngineService implements OnDestroy {
   private url: string;
   public part: string = 'chair';
 
+  public loadingProgress: number;
+
   public constructor(private ngZone: NgZone) {
   }
 
@@ -120,6 +122,7 @@ export class EngineService implements OnDestroy {
         resolve(true);
       }, (xhr) => {
         console.log((xhr.loaded / xhr.total * 100) + '% loaded')
+        this.loadingProgress = xhr.loaded / xhr.total * 100;
       }, (error) => {
         console.log(error);
         reject(false);
@@ -164,14 +167,26 @@ export class EngineService implements OnDestroy {
     this.cleanUp();
     this.url = `assets/models/${this.part}.3MF`;
     console.log(`change part to: ${this.part} with url: ${this.url}`);
-    this.chair = await this.loader.loadAsync(this.url);
+    this.loader.load(this.url, async (geometry) => {
+      // console.log(geometry);
+      // this.chair = new THREE.Mesh(geometry, material);
+      this.chair = geometry;
+      console.log(this.chair);
+      this.chair.position.set(-20, -20, 0);
+      this.chair.rotation.x = -0.5 * Math.PI;
+      this.chair.scale.set(0.05, 0.05, 0.05);
+      this.chair.castShadow = true;
+      this.chair.receiveShadow = true;
+      this.scene.add(this.chair);
+    }, (xhr) => {
+      console.log((xhr.loaded / xhr.total * 100) + '% loaded')
+      this.loadingProgress = xhr.loaded / xhr.total * 100;
+    }, (error) => {
+      console.log(error);
+    })
+    // this.chair = await this.loader.loadAsync(this.url);
+
     console.log('New loadAsync chair: ', this.chair);
-    this.chair.position.set(-20, -20, 0);
-    this.chair.rotation.x = -0.5 * Math.PI;
-    this.chair.scale.set(0.05, 0.05, 0.05);
-    this.chair.castShadow = true;
-    this.chair.receiveShadow = true;
-    this.scene.add(this.chair);
   }
 
   private cleanUp() {

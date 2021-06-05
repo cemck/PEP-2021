@@ -89,18 +89,24 @@ export class ModalChairPartsPage implements OnInit {
     if (this.selectedPart == undefined) {
       return this.presentSelectAlert();
     }
+    this.scanService.loadingAlert.present();
+
     if (this.isKinectScan) {
       this.subscription.add(this.scanService.produceChairPart(this.selectedPart, null, this.scanService.currentKinectScan).subscribe(async (data: any) => {
         console.log('data from produceChairPart(): ', JSON.stringify(data));
         this.goForward();
+        this.scanService.loadingAlert.dismiss();
       }, error => {
+        this.scanService.loadingAlert.dismiss();
         this.presentAlert();
       }));
     } else {
       this.subscription.add(this.scanService.produceChairPart(this.selectedPart, this.scanService.currentScan).subscribe(async (data: any) => {
         console.log('data from produceChairPart(): ', JSON.stringify(data));
         this.goForward();
+        this.scanService.loadingAlert.dismiss();
       }, error => {
+        this.scanService.loadingAlert.dismiss();
         this.presentAlert();
       }));
     }
@@ -125,7 +131,7 @@ export class ModalChairPartsPage implements OnInit {
     this.alert = await this.alertController.create({
       // cssClass: 'my-custom-class',
       // header: 'Error',
-      subHeader: 'Info',
+      subHeader: 'Fehler',
       message: 'Bitte Bauteil auswählen.',
       buttons: ['OK']
     });
