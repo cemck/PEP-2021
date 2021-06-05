@@ -43,7 +43,7 @@ export class EngineService implements OnDestroy {
     });
 
     this.renderer.setPixelRatio(window.devicePixelRatio);
-    this.renderer.setSize(window.innerWidth, window.innerHeight / 2);
+    this.renderer.setSize(window.innerWidth, window.innerHeight / 2.8);
 
     // create the scene
     this.scene = new THREE.Scene();
@@ -51,9 +51,9 @@ export class EngineService implements OnDestroy {
     this.camera = new THREE.PerspectiveCamera(
       75, window.innerWidth / window.innerHeight, 0.1, 1000
     );
-    this.camera.position.z = 200;
-    this.camera.position.y = 100;
-    this.camera.position.x = 100;
+    this.camera.position.z = 50;
+    this.camera.position.y = 30;
+    this.camera.position.x = 50;
     this.camera.lookAt(0, 0, 0); // Point camera at chair
     this.scene.add(this.camera);
 
@@ -73,8 +73,8 @@ export class EngineService implements OnDestroy {
     this.dirLight.shadow.mapSize.height = 2048;
     this.scene.add(this.dirLight);
 
-    let helper = new THREE.DirectionalLightHelper(this.dirLight);
-    this.scene.add(helper);
+    // let helper = new THREE.DirectionalLightHelper(this.dirLight);
+    // this.scene.add(helper);
 
     let axesHelper = new THREE.AxesHelper(5);
     this.scene.add(axesHelper);
@@ -212,8 +212,8 @@ export class EngineService implements OnDestroy {
     const height = window.innerHeight;
     if (canvas.width !== width || canvas.height !== height) {
       // you must pass false here or three.js sadly fights the browser
-      this.renderer.setSize(width, height / 2, false);
-      this.camera.aspect = width / (height / 2);
+      this.renderer.setSize(width, height / 2.8, false);
+      this.camera.aspect = width / (height / 2.8);
       this.camera.updateProjectionMatrix();
 
       // set render target sizes here
@@ -228,9 +228,9 @@ export class EngineService implements OnDestroy {
     // const width = this.canvas.width;
     // const height = this.canvas.height;
 
-    this.camera.aspect = width / (height / 2);
+    this.camera.aspect = width / (height / 2.8);
     this.camera.updateProjectionMatrix();
 
-    this.renderer.setSize(width, height / 2);
+    this.renderer.setSize(width, height / 2.8);
   }
 }

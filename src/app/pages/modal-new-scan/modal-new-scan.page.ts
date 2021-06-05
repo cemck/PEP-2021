@@ -1,6 +1,7 @@
 import { Component, OnInit } from '@angular/core';
 import { ModalController, IonNav, Platform } from '@ionic/angular';
 import { ModalVrQrLinkPage } from '../modal-vr-qr-link/modal-vr-qr-link.page';
+import { ModalKinectPage } from '../modal-kinect/modal-kinect.page';
 import { StatusBar } from '@ionic-native/status-bar/ngx';
 
 @Component({
@@ -11,6 +12,7 @@ import { StatusBar } from '@ionic-native/status-bar/ngx';
 export class ModalNewScanPage implements OnInit {
   level = 0;
   nextPage = ModalVrQrLinkPage;
+  nextPageKinect = ModalKinectPage;
   isStatusBarLight = true
 
   constructor(
@@ -52,16 +54,20 @@ export class ModalNewScanPage implements OnInit {
   }
 
   async presentVRModal() {
-    this.goForward();
+    this.goForward(false);
   }
 
   async presentKinectModal() {
-    console.log('display Kinect instructions');
+    this.goForward(true);
   }
 
-  goForward() {
+  goForward(kinect: boolean) {
     console.log('display VRQR page');
-    this.nav.push(this.nextPage, { level: this.level + 1 });
+    if (kinect) {
+      this.nav.push(this.nextPageKinect, { level: this.level + 1 });
+    } else {
+      this.nav.push(this.nextPage, { level: this.level + 1 });
+    }
   }
 
   goRoot() {

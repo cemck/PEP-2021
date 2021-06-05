@@ -23,6 +23,16 @@ export class HomePage {
 
   ngOnInit(): void {
     // console.log(this.platform.platforms());
+    const prefersDark = window.matchMedia('(prefers-color-scheme: dark)');
+    this.isStatusBarLight = !prefersDark.matches;
+
+    prefersDark.addEventListener('change', e => {
+      this.isStatusBarLight = !e.matches;
+      // if (this.platform.is('android')) {
+      //   this.setStatusbarColor();
+      // }
+      if (this.platform.is('mobile')) this.setStatusbarColor(false);
+    });
 
     this.scans = [
       {
@@ -96,6 +106,7 @@ export class HomePage {
 
   ionViewDidEnter() {
     if (this.platform.is('mobile')) this.setStatusbarColor(true);
+    // this.presentModal();
   }
 
   async presentModal() {

@@ -39,6 +39,20 @@ export class ChairParts {
   UgL: number;
 }
 
+export class KinectScan {
+  _id: string;
+  body_depth: number;
+  body_width: number;
+  elbow_height: number;
+  lowerleg_length: number;
+  shoulder_height: number;
+  height: number;
+  OgR: number;
+  OgL: number;
+  UgR: number;
+  UgL: number;
+}
+
 @Injectable({
   providedIn: 'root'
 })
@@ -46,13 +60,18 @@ export class ScanService {
   errorAlert: HTMLIonAlertElement;
   loadingAlert: HTMLIonLoadingElement;
   username: string = 'cemck';
+  currentKinectScan: KinectScan = new KinectScan();
   currentScan: Scan = new Scan();
   currentMeasurements: Measurements = new Measurements();
   statusText: string = null;
   currentChair: Chair = new Chair();
   currentChairParts: ChairParts = new ChairParts();
-  api_url: string = 'https://api-pep2021.azurewebsites.net'
+  api_url: string = 'https://api-pep2021.azurewebsites.net';
+  // api_url: string = 'http://192.168.0.196:5000';
   // api_url: string = 'http://141.99.133.109:5000';
+  // api_url: string = 'http://141.99.133.65:5000';
+  //simulations server IP: 141.99.133.72
+  //simulations server IP: 141.99.133.65 (sim12)
 
   constructor(
     private httpClient: HttpClient,
@@ -65,6 +84,54 @@ export class ScanService {
     this.initLoadingAlert();
   }
   // TODO: Add method to cancel any running API call subscriptions
+
+  getKinect(): Observable<KinectScan> {
+    let headers: HttpHeaders = new HttpHeaders();
+    headers = headers.append('Accept', 'application/json');
+    headers = headers.append('Content-Type', 'application/json');
+    // console.log("createNewScan() headers:", headers);
+
+    return this.httpClient.get<KinectScan>(
+      this.api_url + '/kinect',
+      { headers: headers }
+    ).pipe(
+      map((data: KinectScan) => {
+        console.log('Received data from /kinect: ' + JSON.stringify(data));
+        this.currentKinectScan = data;
+        console.log("currentKinectScan _id: ", this.currentKinectScan['_id']);
+
+        this.currentMeasurements = {
+          body_depth: this.round(data['measurements']['body_depth'] / 10),
+          body_width: this.round(data['measurements']['body_width'] / 10),
+          elbow_height: this.round(data['measurements']['elbow_height'] / 10),
+          lowerleg_length: this.round(data['measurements']['lowerleg_length'] / 10),
+          shoulder_height: this.round(data['measurements']['shoulder_height'] / 10),
+          height: this.round(data['measurements']['height'] / 10)
+        };
+        this.currentChair = {
+          sh: this.round((data['measurements']['body_depth'] + 3.0) / 10),
+          st: this.round(data['measurements']['body_width'] / 10),
+          sb: this.round((data['measurements']['elbow_height'] + 2.5) / 10),
+          lh: this.round((data['measurements']['lowerleg_length'] - 6.5) / 10),
+          ah: this.round(data['measurements']['shoulder_height'] / 10)
+        };
+        this.currentChairParts = {
+          OgR: this.round(data['length_data']['OgR'] / 100),
+          OgL: this.round(data['length_data']['OgR'] / 100),
+          UgR: this.round(data['length_data']['UgR'] / 100),
+          UgL: this.round(data['length_data']['UgL'] / 100)
+        };
+        // this.checkScanState(data).subscribe(async (state: number) => {
+        //   console.log('state from checkScanState(): ', state);
+        // });
+        return data;
+      }), timeout(8000),
+      catchError(error => {
+        this.presentAlert(error['status'] ? error['status'] : error['name']);
+        return throwError('Could not get Kinect scan!: ' + JSON.stringify(error));
+      })
+    )
+  };
 
   createNewScan(username: string): Observable<Scan> {
     let headers: HttpHeaders = new HttpHeaders();
@@ -167,7 +234,13 @@ export class ScanService {
       map((data: Measurements) => {
         // console.log('Received data from /getmeasurements: ' + JSON.stringify(data));
         this.currentMeasurements = data;
-        this.currentChair = { sh: data['body_depth'] + 3.0, st: data['body_width'], sb: data['elbow_height'] + 2.5, lh: data['lowerleg_length'] - 6.5, ah: data['shoulder_height'] };
+        this.currentChair = {
+          sh: this.round(data['body_depth'] + 3.0),
+          st: this.round(data['body_width']),
+          sb: this.round(data['elbow_height'] + 2.5),
+          lh: this.round(data['lowerleg_length'] - 6.5),
+          ah: this.round(data['shoulder_height'])
+        };
         this.loadingAlert.dismiss();
         // this.checkScanState(data).subscribe(async (state: number) => {
         //   console.log('state from checkScanState(): ', state);
@@ -245,10 +318,10 @@ export class ScanService {
         console.log('Received data from /chair_pipe_lengths' + JSON.stringify(data));
         // console.log('Scan state value: ' + JSON.stringify(data[0].state));
         this.currentChairParts = {
-          OgR: data['length_data']['OgR'] / 10,
-          OgL: data['length_data']['OgR'] / 10,
-          UgR: data['length_data']['UgR'] / 10,
-          UgL: data['length_data']['UgL'] / 10
+          OgR: this.round(data['length_data']['OgR'] / 10),
+          OgL: this.round(data['length_data']['OgR'] / 10),
+          UgR: this.round(data['length_data']['UgR'] / 10),
+          UgL: this.round(data['length_data']['UgL'] / 10)
         };
         // this.loadingAlert.dismiss();
 
@@ -270,12 +343,17 @@ export class ScanService {
     )
   };
 
-  produceChairPart(scan: Scan, part: string): Observable<any> {
+  produceChairPart(part: string, scan?: Scan, kinect?: KinectScan): Observable<any> {
     let headers: HttpHeaders = new HttpHeaders();
     headers = headers.append('Accept', 'application/json');
     headers = headers.append('Content-Type', 'application/json');
     // console.log("got id: " + scan.id);
-    let body = JSON.stringify({ vr_id: scan.id, part: part });
+    let body;
+    if (scan) {
+      body = JSON.stringify({ vr_id: scan.id, part: part });
+    } else if (kinect) {
+      body = JSON.stringify({ _id: kinect._id, part: part });
+    }
     // console.log("checkScanState() json body to send:", body);
 
     return this.httpClient.post<any>(
@@ -343,4 +421,7 @@ export class ScanService {
     });
   }
 
+  round(num: number): number {
+    return Math.round(num * 100) / 100
+  }
 }

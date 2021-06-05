@@ -21,87 +21,159 @@
 
 
 <ion-content>
-  <ion-grid style="height: 100%;">
-    <ion-col style="height: 100%;">
+  <ion-grid style="height: 100%; display: flex; flex-flow: column;">
+    <!-- <ion-col style="height: 100%;"> -->
+    <!-- <ion-row class="ion-align-items-center" style="height: 80%; background-color: rgb(0, 4, 255);"> -->
 
-      <div *ngIf="this.segment === 'chair'">
-        <!-- <scenegraph geometry="box" #scenegraph></scenegraph> -->
-        <!-- <scenegraph geometry="box"></scenegraph> -->
-        <app-engine></app-engine>
+    <div *ngIf="this.segment === 'chair'">
+      <!-- <scenegraph geometry="box" #scenegraph></scenegraph> -->
+      <!-- <scenegraph geometry="box"></scenegraph> -->
+      <app-engine></app-engine>
 
-        <ion-list>
+      <div [ngClass]="{'medium_margin': width >= 567, 'small_margin': width < 567 }">
+        <ion-list class="list_padding">
           <ion-item>
             <ion-label slot="start">{{ 'Sitzhöhe' }}</ion-label>
-            <ion-label class="ion-text-end">{{ this.getCurrentMeasurements().body_depth ? this.getCurrentMeasurements().body_depth : '--'}}</ion-label>
-            <ion-label class="ion-text-end">{{ ' cm' }}</ion-label>
+            <ion-row slot="end">
+              <ion-col>
+                <ion-label>{{ this.getCurrentChair().sh ? this.getCurrentChair().sh : '--'}}</ion-label>
+              </ion-col>
+              <ion-col>
+                <ion-label class=" ion-text-end">{{ 'cm' }}</ion-label>
+              </ion-col>
+            </ion-row>
           </ion-item>
           <ion-item>
             <ion-label slot="start">{{ 'Sitztiefe' }}</ion-label>
-            <ion-label class="ion-text-end">{{ this.getCurrentMeasurements().body_width ? this.getCurrentMeasurements().body_width : '--'}}</ion-label>
-            <ion-label class="ion-text-end">{{ ' cm' }}</ion-label>
+            <ion-row slot="end">
+              <ion-col>
+                <ion-label class="ion-text-end">{{ this.getCurrentChair().st ? this.getCurrentChair().st : '--'}}</ion-label>
+              </ion-col>
+              <ion-col>
+                <ion-label class="ion-text-end">{{ ' cm' }}</ion-label>
+              </ion-col>
+            </ion-row>
           </ion-item>
           <ion-item>
             <ion-label slot="start">{{ 'Sitzbreite' }}</ion-label>
-            <ion-label class="ion-text-end">{{ this.getCurrentMeasurements().elbow_height ? this.getCurrentMeasurements().elbow_height : '--'}}</ion-label>
-            <ion-label class="ion-text-end">{{ ' cm' }}</ion-label>
+            <ion-row slot="end">
+              <ion-col>
+                <ion-label class="ion-text-end">{{ this.getCurrentChair().sb ? this.getCurrentChair().sb : '--'}}</ion-label>
+              </ion-col>
+              <ion-col>
+                <ion-label class="ion-text-end">{{ ' cm' }}</ion-label>
+              </ion-col>
+            </ion-row>
           </ion-item>
           <ion-item>
             <ion-label slot="start">{{ 'Lehnenhöhe' }}</ion-label>
-            <ion-label class="ion-text-end">{{ this.getCurrentMeasurements().lowerleg_length ? this.getCurrentMeasurements().lowerleg_length : '--'}}
-            </ion-label>
-            <ion-label class="ion-text-end">{{ ' cm' }}</ion-label>
+            <ion-row slot="end">
+              <ion-col>
+                <ion-label class="ion-text-end">{{ this.getCurrentChair().lh ? this.getCurrentChair().lh : '--'}}</ion-label>
+              </ion-col>
+              <ion-col>
+                <ion-label class="ion-text-end">{{ ' cm' }}</ion-label>
+              </ion-col>
+            </ion-row>
           </ion-item>
           <ion-item>
             <ion-label slot="start">{{ 'Armlehnenhöhe' }}</ion-label>
-            <ion-label class="ion-text-end">{{ this.getCurrentMeasurements().shoulder_height ? this.getCurrentMeasurements().shoulder_height : '--'}}
-            </ion-label>
-            <ion-label class="ion-text-end">{{ ' cm' }}</ion-label>
+            <ion-row slot="end">
+              <ion-col>
+                <ion-label class="ion-text-end">{{ this.getCurrentChair().ah ? this.getCurrentChair().ah : '--'}}</ion-label>
+              </ion-col>
+              <ion-col>
+                <ion-label class="ion-text-end">{{ ' cm' }}</ion-label>
+              </ion-col>
+            </ion-row>
           </ion-item>
         </ion-list>
       </div>
+    </div>
 
-      <ion-list *ngIf="this.segment === 'scan'">
-        <ion-list lines="full">
+    <div *ngIf="this.segment === 'scan'">
+      <div [ngClass]="{'medium_margin': width >= 567, 'small_margin': width < 567 }">
+        <ion-list class="list_padding">
           <ion-item>
             <ion-label slot="start">{{ 'Körpertiefe' }}</ion-label>
-            <ion-label class="ion-text-end">{{ this.getCurrentMeasurements().body_depth ? this.getCurrentMeasurements().body_depth : '--'}}</ion-label>
-            <ion-label class="ion-text-end">{{ ' cm' }}</ion-label>
+            <ion-row slot="end">
+              <ion-col>
+                <ion-label class="ion-text-end">{{ this.getCurrentMeasurements().body_depth ? this.getCurrentMeasurements().body_depth : '--'}}</ion-label>
+              </ion-col>
+              <ion-col>
+                <ion-label class="ion-text-end">{{ ' cm' }}</ion-label>
+              </ion-col>
+            </ion-row>
           </ion-item>
           <ion-item>
             <ion-label slot="start">{{ 'Körperbreite' }}</ion-label>
-            <ion-label class="ion-text-end">{{ this.getCurrentMeasurements().body_width ? this.getCurrentMeasurements().body_width : '--'}}</ion-label>
-            <ion-label class="ion-text-end">{{ ' cm' }}</ion-label>
+            <ion-row slot="end">
+              <ion-col>
+                <ion-label class="ion-text-end">{{ this.getCurrentMeasurements().body_width ? this.getCurrentMeasurements().body_width : '--'}}</ion-label>
+              </ion-col>
+              <ion-col>
+                <ion-label class="ion-text-end">{{ ' cm' }}</ion-label>
+              </ion-col>
+            </ion-row>
           </ion-item>
           <ion-item>
             <ion-label slot="start">{{ 'Ellbogenhöhe' }}</ion-label>
-            <ion-label class="ion-text-end">{{ this.getCurrentMeasurements().elbow_height ? this.getCurrentMeasurements().elbow_height : '--'}}</ion-label>
-            <ion-label class="ion-text-end">{{ ' cm' }}</ion-label>
+            <ion-row slot="end">
+              <ion-col>
+                <ion-label class="ion-text-end">{{ this.getCurrentMeasurements().elbow_height ? this.getCurrentMeasurements().elbow_height : '--'}}</ion-label>
+              </ion-col>
+              <ion-col>
+                <ion-label class="ion-text-end">{{ ' cm' }}</ion-label>
+              </ion-col>
+            </ion-row>
           </ion-item>
           <ion-item>
             <ion-label slot="start">{{ 'Unterschenkellänge' }}</ion-label>
-            <ion-label class="ion-text-end">{{ this.getCurrentMeasurements().lowerleg_length ? this.getCurrentMeasurements().lowerleg_length : '--'}}
-            </ion-label>
-            <ion-label class="ion-text-end">{{ ' cm' }}</ion-label>
+            <ion-row slot="end">
+              <ion-col>
+                <ion-label class="ion-text-end">{{ this.getCurrentMeasurements().lowerleg_length ? this.getCurrentMeasurements().lowerleg_length : '--'}}
+                </ion-label>
+              </ion-col>
+              <ion-col>
+                <ion-label class="ion-text-end">{{ ' cm' }}</ion-label>
+              </ion-col>
+            </ion-row>
           </ion-item>
           <ion-item>
             <ion-label slot="start">{{ 'Schulterhöhe' }}</ion-label>
-            <ion-label class="ion-text-end">{{ this.getCurrentMeasurements().shoulder_height ? this.getCurrentMeasurements().shoulder_height : '--'}}
-            </ion-label>
-            <ion-label class="ion-text-end">{{ ' cm' }}</ion-label>
+            <ion-row slot="end">
+              <ion-col>
+                <ion-label class="ion-text-end">{{ this.getCurrentMeasurements().shoulder_height ? this.getCurrentMeasurements().shoulder_height : '--'}}
+                </ion-label>
+              </ion-col>
+              <ion-col>
+                <ion-label class="ion-text-end">{{ ' cm' }}</ion-label>
+              </ion-col>
+            </ion-row>
           </ion-item>
           <ion-item>
             <ion-label slot="start">{{ 'Körpergröße' }}</ion-label>
-            <ion-label class="ion-text-end">{{ this.getCurrentMeasurements().height ? this.getCurrentMeasurements().height : '--'}}</ion-label>
-            <ion-label class="ion-text-end">{{ ' cm' }}</ion-label>
+            <ion-row slot="end">
+              <ion-col>
+                <ion-label class="ion-text-end">{{ this.getCurrentMeasurements().height ? this.getCurrentMeasurements().height : '--'}}</ion-label>
+              </ion-col>
+              <ion-col>
+                <ion-label class="ion-text-end">{{ ' cm' }}</ion-label>
+              </ion-col>
+            </ion-row>
           </ion-item>
         </ion-list>
-
-      </ion-list>
-
-      <ion-button color="secondary" (click)="confirmMeasurements()" expand="block">Bestätigen</ion-button>
-      <ion-button color="light" (click)="restartScan()" expand="block">Neustarten</ion-button>
-
-    </ion-col>
+      </div>
+    </div>
+    <!-- </ion-row> -->
+    <ion-row class="ion-align-self-center ion-align-items-top" [ngClass]="{'medium_b_margin': height >= 1000, 'small_b_margin': height < 1000 }"
+      style="flex-grow: 1;">
+      <div class="vertical">
+        <ion-button color="primary" (click)="confirmMeasurements()">Bestätigen</ion-button>
+        <ion-button color="light" (click)="restartScan()">Neustarten</ion-button>
+      </div>
+    </ion-row>
+    <!-- </ion-col> -->
   </ion-grid>
 
 </ion-content>

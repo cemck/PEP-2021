@@ -4,6 +4,7 @@
         <domain includeSubdomains="true">localhost</domain>
         <domain includeSubdomains="true">192.168.0.196</domain>
         <domain includeSubdomains="true">141.99.133.109</domain>
+        <domain includeSubdomains="true">141.99.133.65</domain>
         <domain includeSubdomains="true">static.videogular.com</domain>
     </domain-config>
     <base-config cleartextTrafficPermitted="false" />

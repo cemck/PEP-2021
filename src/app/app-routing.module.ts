@@ -24,16 +24,16 @@ const routes: Routes = [
     loadChildren: () => import('./pages/modal-scan-result/modal-scan-result.module').then(m => m.ModalScanResultPageModule)
   },
   {
-    path: 'modal-chair-info',
-    loadChildren: () => import('./pages/modal-chair-info/modal-chair-info.module').then(m => m.ModalChairInfoPageModule)
-  },
-  {
     path: 'modal-chair-parts',
     loadChildren: () => import('./pages/modal-chair-parts/modal-chair-parts.module').then(m => m.ModalChairPartsPageModule)
   },
   {
     path: 'modal-live-camera-stream',
     loadChildren: () => import('./pages/modal-live-camera-stream/modal-live-camera-stream.module').then(m => m.ModalLiveCameraStreamPageModule)
+  },
+  {
+    path: 'modal-kinect',
+    loadChildren: () => import('./pages/modal-kinect/modal-kinect.module').then(m => m.ModalKinectPageModule)
   },
 ];
 

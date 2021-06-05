@@ -1,36 +1,38 @@
-.select-small {
-    // height: 200px;
-    width: 200px;
-    // --horizontal-align: middle;
-    // --padding-start: 10px;
-    // --padding-end: 10px;
-    // // --ripple-color: darkcyan;
-    // --padding-bottom: 2px !important;
-    // // --box-shadow: none;
-    // margin: 20px;
+.vertical {
+    display: flex;
+    flex-direction: column;
+    line-height: 60px;
+    // background-color: blueviolet;
+    padding: 10px;
 }
-
-/* Set the width to the full container and center the content */
-// ion-select {
-//     width: 100%;
-
-//     justify-content: center;
-// }
-
-// ion-select {
-//     --offset-bottom: auto!important;
-//     --overflow: hidden;
-//     overflow: auto;
-//     &::-webkit-scrollbar {
-//         display: none;
-//     }
-// }
-
-// ion-select::part(scroll)::-webkit-scrollbar {
-//     display: none;
-// }
-// // Hide scrollbar for IE, Edge and Firefox
-// ion-select::part(scroll) {
-//     -ms-overflow-style: none; // IE and Edge
-//     scrollbar-width: none; // Firefox
-// }
+.small_margin {
+    padding: 0px;
+    margin: 0px 0px;
+}
+.medium_margin {
+    padding: 12px;
+    margin: 0px auto;
+    // background-color: blueviolet;
+    width: 400px;
+}
+.list_padding {
+    padding: 4px;
+    margin: 0px 0px;
+    border-radius: 12px !important;
+}
+.menu_padding {
+    padding: 4px;
+    margin: 0px 0px;
+    border-radius: 12px !important;
+}
+.small_b_margin {
+    padding: 0px;
+    margin: 4px 0px;
+}
+.medium_b_margin {
+    padding: 12px;
+    margin: 60px 0px;
+}
+.medium_menu_margin {
+    margin-top: 60px;
+}

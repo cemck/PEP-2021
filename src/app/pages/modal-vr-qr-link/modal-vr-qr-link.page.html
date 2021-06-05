@@ -6,7 +6,7 @@
       </ion-button>
       <ion-back-button *ngIf="level > 0"></ion-back-button>
     </ion-buttons>
-    <ion-title>ModalVRQRLink Page</ion-title>
+    <ion-title>Virtualretail Scan</ion-title>
   </ion-toolbar>
 </ion-header>
 
@@ -26,11 +26,10 @@
 
             <div *ngIf="this.platform.is('mobile') && showOpenBrowserButton && this.hasScanLink()">
               <ion-text color="danger">
-                <h6>Info: Make sure to disable Pop-Up blocking in your browser
-                  settings if no window is showing up.</h6>
+                <h6>Info: Bitte Pop-Up Blocker deaktivieren, falls kein Browser sichtbar ist.</h6>
               </ion-text>
 
-              <ion-button expand="block" (click)="openBrowser()">
+              <ion-button color="primary" expand="block" (click)="openBrowser()">
                 <ion-icon slot="start" name="open-outline"></ion-icon>
                 Mobilescan.me Öffnen
               </ion-button>

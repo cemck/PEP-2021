@@ -1,6 +1,6 @@
 import { Component, ElementRef, OnInit, ViewChild } from '@angular/core';
 import { AlertController, IonNav, Platform } from '@ionic/angular';
-import { Measurements, ScanService } from '../../services/scan.service';
+import { Chair, Measurements, ScanService } from '../../services/scan.service';
 import { Subscription } from 'rxjs';
 import { InAppBrowser } from '@ionic-native/in-app-browser/ngx';
 import { ModalChairPartsPage } from '../modal-chair-parts/modal-chair-parts.page';
@@ -13,6 +13,7 @@ import { EngineService } from '../../engine/engine.service';
 })
 export class ModalScanResultPage implements OnInit {
   level = 0;
+  isKinectScan: boolean;
   nextPage = ModalChairPartsPage;
   private subscription: Subscription = new Subscription();
   alert: HTMLIonAlertElement;
@@ -30,11 +31,14 @@ export class ModalScanResultPage implements OnInit {
   public ngOnInit() {
     this.segment = 'chair';
     this.engineService.part = 'chair';
-    this.subscription.add(this.scanService.getMeasurements(this.scanService.currentScan).subscribe(async (data: Measurements) => {
-      console.log('measurements from getMeasurements(): ', JSON.stringify(data));
-    }, error => {
-      this.presentAlert();
-    }));
+    console.log('isKinectScan :', this.isKinectScan)
+    if (!this.isKinectScan) {
+      this.subscription.add(this.scanService.getMeasurements(this.scanService.currentScan).subscribe(async (data: Measurements) => {
+        console.log('measurements from getMeasurements(): ', JSON.stringify(data));
+      }, error => {
+        this.presentAlert();
+      }));
+    }
   }
 
   ngOnDestroy() {
@@ -47,12 +51,14 @@ export class ModalScanResultPage implements OnInit {
 
   ionViewDidEnter() {
     this.nav.removeIndex(1);
-    if (this.platform.is('mobile')) this.iab.create('pep2021://close', '_system').show(); // Reopen app after closing browser tab
+    if (!this.isKinectScan) {
+      if (this.platform.is('mobile')) this.iab.create('pep2021://close', '_system').show(); // Reopen app after closing browser tab
+    }
   }
 
   goForward() {
     // this.nav.push(this.nextPage, { level: this.level + 1 });
-    this.nav.push(this.nextPage);
+    this.nav.push(this.nextPage, { isKinectScan: this.isKinectScan });
   }
 
   goRoot() {
@@ -68,18 +74,33 @@ export class ModalScanResultPage implements OnInit {
     return this.scanService.currentMeasurements;
   }
 
+  getCurrentChair(): Chair {
+    return this.scanService.currentChair;
+  }
+
+  public get width() {
+    return window.innerWidth;
+  }
+
+  public get height() {
+    return window.innerHeight;
+  }
+
   confirmMeasurements() {
     console.log('confirmed measurements');
-
-    this.subscription.add(
-      this.scanService.confirmMeasurements(this.scanService.currentMeasurements).subscribe(async (data: Measurements) => {
-        console.log('data:' + JSON.stringify(data));
-        this.scanService.loadingAlert.present();
-        this.goForward();
-      }, error => {
-        this.presentAlert();
-      })
-    );
+    if (this.isKinectScan) {
+      this.goForward();
+    } else {
+      this.subscription.add(
+        this.scanService.confirmMeasurements(this.scanService.currentMeasurements).subscribe(async (data: Measurements) => {
+          console.log('data:' + JSON.stringify(data));
+          this.scanService.loadingAlert.present();
+          this.goForward();
+        }, error => {
+          this.presentAlert();
+        })
+      );
+    }
   }
 
   restartScan() {

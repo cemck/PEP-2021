@@ -1,0 +1,31 @@
+<ion-header>
+  <ion-toolbar color="light">
+    <ion-buttons slot="start">
+      <ion-button (click)="close()" *ngIf="level == 0">
+        <ion-icon slot="icon-only" name="close"></ion-icon>
+      </ion-button>
+      <ion-back-button *ngIf="level > 0"></ion-back-button>
+    </ion-buttons>
+    <ion-title>Xbox Kinect Scan</ion-title>
+  </ion-toolbar>
+</ion-header>
+
+<ion-content>
+
+  <ion-grid style="height: 100%;">
+    <ion-row style="height: 100%;">
+      <ion-col class="ion-text-center ion-align-self-center" size="12" size-sm>
+
+        <div class="vertical">
+          <h6>Bitte schließe den Scan Prozess mit der Xbox Kinect ab und klicke anschließend auf Start.</h6>
+          <ion-button color="primary" (click)="startScan()">
+            <ion-icon slot="start" name="play-outline"></ion-icon>
+            Start
+          </ion-button>
+        </div>
+
+      </ion-col>
+    </ion-row>
+  </ion-grid>
+
+</ion-content>

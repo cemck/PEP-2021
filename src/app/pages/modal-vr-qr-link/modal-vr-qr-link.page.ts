@@ -65,7 +65,7 @@ export class ModalVrQrLinkPage implements OnInit {
 
   goForward() {
     // this.nav.push(this.nextPage, { level: this.level + 1 });
-    this.nav.push(this.nextPage);
+    this.nav.push(this.nextPage, { isKinectScan: false });
   }
 
   goRoot() {

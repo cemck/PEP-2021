@@ -12,6 +12,7 @@ import { EngineService } from '../../engine/engine.service';
 })
 export class ModalChairPartsPage implements OnInit {
   level = 4;
+  isKinectScan: boolean;
   nextPage = ModalLiveCameraStreamPage;
   private subscription: Subscription = new Subscription();
   alert: HTMLIonAlertElement;
@@ -28,11 +29,13 @@ export class ModalChairPartsPage implements OnInit {
 
   ngOnInit() {
     this.engineService.part = 'chair';
-    this.subscription.add(this.scanService.getChairParts(this.scanService.currentScan).subscribe(async (data: ChairParts) => {
-      console.log('chair parts from getChairParts(): ', JSON.stringify(data));
-    }, error => {
-      this.presentAlert();
-    }));
+    if (!this.isKinectScan) {
+      this.subscription.add(this.scanService.getChairParts(this.scanService.currentScan).subscribe(async (data: ChairParts) => {
+        console.log('chair parts from getChairParts(): ', JSON.stringify(data));
+      }, error => {
+        this.presentAlert();
+      }));
+    }
   }
 
   ngOnDestroy() {
@@ -65,6 +68,14 @@ export class ModalChairPartsPage implements OnInit {
     return this.scanService.currentChairParts;
   }
 
+  public get width() {
+    return window.innerWidth;
+  }
+
+  public get height() {
+    return window.innerHeight;
+  }
+
   selectedPartChanged($event) {
     console.log('selectedPartChanged to: ', $event.detail.value);
     this.selectedPart = $event.detail.value;
@@ -78,13 +89,21 @@ export class ModalChairPartsPage implements OnInit {
     if (this.selectedPart == undefined) {
       return this.presentSelectAlert();
     }
-
-    this.subscription.add(this.scanService.produceChairPart(this.scanService.currentScan, this.selectedPart).subscribe(async (data: any) => {
-      console.log('data from produceChairPart(): ', JSON.stringify(data));
-      this.goForward();
-    }, error => {
-      this.presentAlert();
-    }));
+    if (this.isKinectScan) {
+      this.subscription.add(this.scanService.produceChairPart(this.selectedPart, null, this.scanService.currentKinectScan).subscribe(async (data: any) => {
+        console.log('data from produceChairPart(): ', JSON.stringify(data));
+        this.goForward();
+      }, error => {
+        this.presentAlert();
+      }));
+    } else {
+      this.subscription.add(this.scanService.produceChairPart(this.selectedPart, this.scanService.currentScan).subscribe(async (data: any) => {
+        console.log('data from produceChairPart(): ', JSON.stringify(data));
+        this.goForward();
+      }, error => {
+        this.presentAlert();
+      }));
+    }
   }
 
   async presentAlert() {
