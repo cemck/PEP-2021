@@ -23,13 +23,17 @@ export class ModalKinectPage implements OnInit {
   ngOnInit() {
   }
 
-  ionViewWillEnter() {
+  ionViewDidEnter() {
     // console.log('ionViewWillEnter');
-    this.scanService.loadingAlert.dismiss();
+    this.scanService.dismissLoadingAlert();
   }
 
   goForward() {
     // this.nav.push(this.nextPage, { level: this.level + 1 });
+
+    // this.scanService.loadingAlert.onDidDismiss().then(() => {
+    //   console.log('loading finshed')
+    // });
     this.nav.push(this.nextPage, { isKinectScan: true });
   }
 
@@ -48,15 +52,14 @@ export class ModalKinectPage implements OnInit {
 
   startScan() {
     console.log('start kinect scan');
-    this.scanService.loadingAlert.present();
+    this.scanService.presentLoadingAlert();
     this.subscription.add(
       this.scanService.getKinect().subscribe(async (data: KinectScan) => {
         console.log('data:' + JSON.stringify(data));
-        this.scanService.loadingAlert.dismiss();
         this.goForward();
       }, error => {
         console.log(error)
-        this.scanService.loadingAlert.dismiss();
+        this.scanService.dismissLoadingAlert();
       })
     )
   }

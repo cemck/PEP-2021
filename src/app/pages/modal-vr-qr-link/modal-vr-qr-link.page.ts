@@ -1,5 +1,5 @@
 import { Component, OnInit } from '@angular/core';
-import { ModalController, LoadingController, IonNav, Platform } from '@ionic/angular';
+import { ModalController, IonNav, Platform } from '@ionic/angular';
 import { Scan, ScanService } from '../../services/scan.service';
 import { Subscription } from 'rxjs';
 import { ModalScanResultPage } from '../modal-scan-result/modal-scan-result.page';
@@ -25,7 +25,6 @@ export class ModalVrQrLinkPage implements OnInit {
 
   constructor(
     private modalController: ModalController,
-    private loadingController: LoadingController,
     private nav: IonNav,
     public platform: Platform,
     private scanService: ScanService,
@@ -44,24 +43,25 @@ export class ModalVrQrLinkPage implements OnInit {
 
   ionViewWillEnter() {
     // console.log('ionViewWillEnter');
-    this.scanService.loadingAlert.dismiss();
     this.scanService.statusText = null;
   }
 
-  async ionViewDidEnter() {
+  ionViewDidEnter() {
     // console.log('ionViewDidEnter');
     // this.showOpenBrowserButton = false;
-    if (this.platform.is('mobile')) {
-      this.scanService.initLoadingAlert();
-      this.scanService.loadingAlert.present();
-    }
+    // if (this.platform.is('mobile')) {
+    //   this.scanService.presentLoadingAlert();
+    // }
     this.scanService.statusText = null;
-
-    await this.scanService.loadingAlert.onDidDismiss().then(() => {
-      console.log('Loading dismissed');
+    setTimeout(() => {
       this.showOpenBrowserButton = true;
-      this.scanService.loadingAlert.dismiss();
-    });
+    }, 5000);
+
+    // this.scanService.loadingAlert.onDidDismiss().then(() => {
+    //   console.log('Loading dismissed');
+    //   this.showOpenBrowserButton = true;
+    //   this.scanService.dismissLoadingAlert();
+    // });
   }
 
   goForward() {
@@ -89,16 +89,18 @@ export class ModalVrQrLinkPage implements OnInit {
         if (this.platform.is('mobile')) {
           await this.openBrowser();
           // or: implement own camera solution
+          this.scanService.dismissLoadingAlert();
         } else {
           // diplay QR code in order to use mobile device with Virtualretail camera scan
           // make API call to generate QR code data and Virtualretail scan session id
           this.convertedImage = "data:image/jpeg;base64," + data.qrcode;
           console.log('display currentScan qrcode:' + data.qrcode);
+          this.scanService.dismissLoadingAlert();
           this.continueToCheckState();
         }
       }, error => {
         console.log(error)
-        this.scanService.loadingAlert.dismiss();
+        this.scanService.dismissLoadingAlert();
       })
     )
   }
@@ -108,17 +110,16 @@ export class ModalVrQrLinkPage implements OnInit {
 
     if (this.scanService.currentScan.link == null) {
       // this.createNewScan();
-      this.scanService.loadingAlert.dismiss();
+      this.scanService.dismissLoadingAlert();
       this.scanService.presentAlert('No Mobilescan.me link').then(() => {
         this.restartScan();
       });
       return;
     }
 
-    // await Browser.open({ url: this.scanService.currentScan.link });
-
     this.browserTab.isAvailable()
       .then((isAvailable: boolean) => {
+        this.scanService.dismissLoadingAlert();
         if (isAvailable) {
           this.browserTab.openUrl(this.scanService.currentScan.link);
         } else {
@@ -136,7 +137,7 @@ export class ModalVrQrLinkPage implements OnInit {
         console.log('state from checkScanState(): ', state);
         if (state == 2) {
           this.showSpinner = false;
-          this.scanService.loadingAlert.present();
+          this.scanService.presentLoadingAlert();
           if (this.platform.is('mobile')) this.browserTab.close();
           if (this.platform.is('mobile')) this.iab.create('pep2021://close', '_system').show(); // Reopen app after closing browser tab
           this.goForward();

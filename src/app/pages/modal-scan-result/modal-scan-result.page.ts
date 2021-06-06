@@ -1,6 +1,6 @@
 import { Component, ElementRef, OnInit, ViewChild } from '@angular/core';
 import { AlertController, IonNav, Platform } from '@ionic/angular';
-import { Chair, Measurements, ScanService } from '../../services/scan.service';
+import { Chair, ChairParts, Measurements, ScanService } from '../../services/scan.service';
 import { Subscription } from 'rxjs';
 import { InAppBrowser } from '@ionic-native/in-app-browser/ngx';
 import { ModalChairPartsPage } from '../modal-chair-parts/modal-chair-parts.page';
@@ -31,7 +31,7 @@ export class ModalScanResultPage implements OnInit {
   public ngOnInit() {
     this.segment = 'chair';
     this.engineService.part = 'chair';
-    console.log('isKinectScan :', this.isKinectScan)
+    console.log('isKinectScan :', this.isKinectScan);
 
     if (this.isKinectScan == false) {
       if (this.platform.is('mobile')) {
@@ -56,6 +56,7 @@ export class ModalScanResultPage implements OnInit {
 
   ionViewDidEnter() {
     this.nav.removeIndex(1);
+    this.scanService.dismissLoadingAlert();
   }
 
   goForward() {
@@ -88,21 +89,32 @@ export class ModalScanResultPage implements OnInit {
     return window.innerHeight;
   }
 
-  confirmMeasurements() {
+  async confirmMeasurements() {
     console.log('confirmed measurements');
-    if (this.isKinectScan) {
-      this.scanService.loadingAlert.present();
-      this.goForward();
+    if (this.segment === 'chair') {
+      this.segment = 'scan';
     } else {
-      this.subscription.add(
-        this.scanService.confirmMeasurements(this.scanService.currentMeasurements).subscribe(async (data: Measurements) => {
-          console.log('data:' + JSON.stringify(data));
-          this.scanService.loadingAlert.present();
-          this.goForward();
-        }, error => {
-          this.presentAlert();
-        })
-      );
+      if (this.isKinectScan) {
+        this.scanService.presentLoadingAlert();
+        this.nav.push(this.nextPage, { isKinectScan: this.isKinectScan });
+      } else {
+        this.scanService.presentLoadingAlert();
+        this.subscription.add(
+          this.scanService.confirmMeasurements(this.scanService.currentMeasurements).subscribe(async (data: Measurements) => {
+            console.log('data:' + JSON.stringify(data));
+            if (!this.isKinectScan) {
+              this.subscription.add(this.scanService.getChairParts(this.scanService.currentScan).subscribe(async (data: ChairParts) => {
+                console.log('chair parts from getChairParts(): ', JSON.stringify(data));
+                this.nav.push(this.nextPage, { isKinectScan: this.isKinectScan });
+              }, error => {
+                this.presentAlert();
+              }));
+            }
+          }, error => {
+            this.presentAlert();
+          })
+        );
+      }
     }
   }
 

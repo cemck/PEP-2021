@@ -45,13 +45,13 @@ export class EngineService implements OnDestroy {
     });
 
     this.renderer.setPixelRatio(window.devicePixelRatio);
-    this.renderer.setSize(window.innerWidth, window.innerHeight / 2.8);
+    this.renderer.setSize(window.innerWidth, window.innerHeight / 3);
 
     // create the scene
     this.scene = new THREE.Scene();
 
     this.camera = new THREE.PerspectiveCamera(
-      75, window.innerWidth / window.innerHeight, 0.1, 1000
+      50, window.innerWidth / window.innerHeight, 0.1, 1000
     );
     this.camera.position.z = 50;
     this.camera.position.y = 30;
@@ -227,8 +227,8 @@ export class EngineService implements OnDestroy {
     const height = window.innerHeight;
     if (canvas.width !== width || canvas.height !== height) {
       // you must pass false here or three.js sadly fights the browser
-      this.renderer.setSize(width, height / 2.8, false);
-      this.camera.aspect = width / (height / 2.8);
+      this.renderer.setSize(width, height / 3, false);
+      this.camera.aspect = width / (height / 3);
       this.camera.updateProjectionMatrix();
 
       // set render target sizes here
@@ -243,9 +243,9 @@ export class EngineService implements OnDestroy {
     // const width = this.canvas.width;
     // const height = this.canvas.height;
 
-    this.camera.aspect = width / (height / 2.8);
+    this.camera.aspect = width / (height / 3);
     this.camera.updateProjectionMatrix();
 
-    this.renderer.setSize(width, height / 2.8);
+    this.renderer.setSize(width, height / 3);
   }
 }

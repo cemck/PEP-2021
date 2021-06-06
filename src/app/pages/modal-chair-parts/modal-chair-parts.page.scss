@@ -31,16 +31,21 @@
 }
 .small_b_margin {
     padding: 0px;
-    margin: 4px 0px;
+    margin: 4px;
 }
 .medium_b_margin {
     padding: 12px;
-    margin: 40px 0px;
+    margin: 40px;
 }
 .medium_menu_margin {
     margin-top: 60px;
 }
 .big_b {
+    height: 50px;
+    width: 200px;
+    margin: 8px auto;
+}
+.small_b {
     height: 40px;
-    margin-top: 8px;
+    margin: 8px auto;
 }

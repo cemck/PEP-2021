@@ -29,13 +29,6 @@ export class ModalChairPartsPage implements OnInit {
 
   ngOnInit() {
     this.engineService.part = 'chair_clean';
-    if (!this.isKinectScan) {
-      this.subscription.add(this.scanService.getChairParts(this.scanService.currentScan).subscribe(async (data: ChairParts) => {
-        console.log('chair parts from getChairParts(): ', JSON.stringify(data));
-      }, error => {
-        this.presentAlert();
-      }));
-    }
   }
 
   ngOnDestroy() {
@@ -44,6 +37,7 @@ export class ModalChairPartsPage implements OnInit {
 
   ionViewDidEnter() {
     this.nav.removeIndex(1);
+    this.scanService.dismissLoadingAlert();
   }
 
   goForward() {
@@ -89,24 +83,24 @@ export class ModalChairPartsPage implements OnInit {
     if (this.selectedPart == undefined) {
       return this.presentSelectAlert();
     }
-    this.scanService.loadingAlert.present();
+    this.scanService.presentLoadingAlert();
 
     if (this.isKinectScan) {
       this.subscription.add(this.scanService.produceChairPart(this.selectedPart, null, this.scanService.currentKinectScan).subscribe(async (data: any) => {
         console.log('data from produceChairPart(): ', JSON.stringify(data));
         this.goForward();
-        this.scanService.loadingAlert.dismiss();
+        this.scanService.dismissLoadingAlert();
       }, error => {
-        this.scanService.loadingAlert.dismiss();
+        this.scanService.dismissLoadingAlert();
         this.presentAlert();
       }));
     } else {
       this.subscription.add(this.scanService.produceChairPart(this.selectedPart, this.scanService.currentScan).subscribe(async (data: any) => {
         console.log('data from produceChairPart(): ', JSON.stringify(data));
         this.goForward();
-        this.scanService.loadingAlert.dismiss();
+        this.scanService.dismissLoadingAlert();
       }, error => {
-        this.scanService.loadingAlert.dismiss();
+        this.scanService.dismissLoadingAlert();
         this.presentAlert();
       }));
     }

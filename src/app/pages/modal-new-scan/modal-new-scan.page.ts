@@ -63,9 +63,10 @@ export class ModalNewScanPage implements OnInit {
     this.goForward(true);
   }
 
-  goForward(kinect: boolean) {
+  async goForward(kinect: boolean) {
     console.log('display VRQR page');
-    this.scanService.loadingAlert.present();
+    this.scanService.presentLoadingAlert();
+
     if (kinect) {
       this.nav.push(this.nextPageKinect, { level: this.level + 1 });
     } else {

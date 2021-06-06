@@ -81,7 +81,7 @@ export class ScanService {
     private browserTab: BrowserTab,
     public platform: Platform,
   ) {
-    this.initLoadingAlert();
+    // this.presentLoadingAlert();
   }
   // TODO: Add method to cancel any running API call subscriptions
 
@@ -211,7 +211,7 @@ export class ScanService {
           delayWhen(res => timer(5 * 1000))
         )
       ), catchError(error => {
-        this.loadingAlert.dismiss();
+        this.dismissLoadingAlert();
         this.presentAlert(error['status']);
         return throwError('Could not check scan state!: ' + JSON.stringify(error));
       })
@@ -241,7 +241,7 @@ export class ScanService {
           lh: this.round(data['lowerleg_length'] - 6.5),
           ah: this.round(data['shoulder_height'])
         };
-        this.loadingAlert.dismiss();
+        // this.dismissLoadingAlert();
         // this.checkScanState(data).subscribe(async (state: number) => {
         //   console.log('state from checkScanState(): ', state);
         // });
@@ -256,7 +256,6 @@ export class ScanService {
         )
       ), timeout(8000),
       catchError(error => {
-        this.loadingAlert.dismiss();
         this.presentAlert(error['status']);
         return throwError('Could not get measurements!: ' + JSON.stringify(error));
       })
@@ -279,7 +278,7 @@ export class ScanService {
       map((data: Measurements) => {
         console.log('Received data from /measurements: ' + JSON.stringify(data));
         // this.currentMeasurements = data;
-        // this.loadingAlert.dismiss();
+        // this.dismissLoadingAlert();
         // this.checkScanState(data).subscribe(async (state: number) => {
         //   console.log('state from checkScanState(): ', state);
         // });
@@ -294,7 +293,7 @@ export class ScanService {
         )
       ), timeout(8000),
       catchError(error => {
-        this.loadingAlert.dismiss();
+        this.dismissLoadingAlert();
         this.presentAlert(error['status']);
         return throwError('Could not confirm measurements!: ' + JSON.stringify(error));
       })
@@ -323,7 +322,7 @@ export class ScanService {
           UgR: this.round(data['length_data']['UgR'] / 10),
           UgL: this.round(data['length_data']['UgL'] / 10)
         };
-        // this.loadingAlert.dismiss();
+        // this.dismissLoadingAlert();
 
         return data;
       }),
@@ -336,7 +335,7 @@ export class ScanService {
         )
       ), timeout(8000),
       catchError(error => {
-        this.loadingAlert.dismiss();
+        this.dismissLoadingAlert();
         this.presentAlert(error['status']);
         return throwError('Could not get chair part lengths!: ' + JSON.stringify(error));
       })
@@ -365,7 +364,7 @@ export class ScanService {
         console.log('Received data from /produce' + JSON.stringify(data));
         // console.log('Scan state value: ' + JSON.stringify(data[0].state));
         // this.currentChairParts = data['length_data'];
-        // this.loadingAlert.dismiss();
+        // this.dismissLoadingAlert();
 
         return data;
       }),
@@ -378,7 +377,7 @@ export class ScanService {
         )
       ), timeout(8000),
       catchError(error => {
-        this.loadingAlert.dismiss();
+        this.dismissLoadingAlert();
         this.presentAlert(error['status']);
         return throwError('Could not produce!: ' + JSON.stringify(error));
       })
@@ -409,17 +408,27 @@ export class ScanService {
     // console.log('onDidDismiss resolved with role', role);
   }
 
-  async initLoadingAlert() {
+  async presentLoadingAlert() {
     this.loadingAlert = await this.loadingController.create({
       // cssClass: 'my-custom-class',
       message: 'Lade...',
-      duration: 5000,
+      // duration: 5000,
       // translucent: true,
     });
+
+    await this.loadingAlert.present();
 
     await this.loadingAlert.onDidDismiss().then(() => {
       console.log('Loading dismissed');
     });
+  }
+
+  async dismissLoadingAlert() {
+    try {
+      await this.loadingAlert.dismiss();
+    } catch {
+
+    }
   }
 
   round(num: number): number {

@@ -25,7 +25,7 @@
             <ion-spinner *ngIf="this.showSpinner && this.hasScanLink()"></ion-spinner>
 
             <div *ngIf="this.platform.is('mobile') && showOpenBrowserButton && this.hasScanLink()">
-              <ion-text color="danger">
+              <ion-text color="warning">
                 <h6>Info: Bitte Pop-Up Blocker deaktivieren, falls kein Browser sichtbar ist.</h6>
               </ion-text>
 
