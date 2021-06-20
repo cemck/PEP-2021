@@ -1,6 +1,6 @@
 import { Component, OnInit } from '@angular/core';
 import { ModalController, LoadingController, IonNav, Platform } from '@ionic/angular';
-import { KinectScan, Scan, ScanService } from '../../services/scan.service';
+import { KinectScan, Scan, ApiService } from '../../services/api.service';
 import { Subscription } from 'rxjs';
 import { ModalScanResultPage } from '../modal-scan-result/modal-scan-result.page';
 
@@ -17,7 +17,7 @@ export class ModalKinectPage implements OnInit {
   constructor(
     private modalController: ModalController,
     private nav: IonNav,
-    private scanService: ScanService,
+    private scanService: ApiService,
   ) { }
 
   ngOnInit() {

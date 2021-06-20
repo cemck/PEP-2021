@@ -56,7 +56,7 @@ export class KinectScan {
 @Injectable({
   providedIn: 'root'
 })
-export class ScanService {
+export class ApiService {
   errorAlert: HTMLIonAlertElement;
   loadingAlert: HTMLIonLoadingElement;
   username: string = 'cemck';

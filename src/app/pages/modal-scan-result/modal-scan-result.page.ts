@@ -1,6 +1,6 @@
 import { Component, ElementRef, OnInit, ViewChild } from '@angular/core';
 import { AlertController, IonNav, Platform } from '@ionic/angular';
-import { Chair, ChairParts, Measurements, ScanService } from '../../services/scan.service';
+import { Chair, ChairParts, Measurements, ApiService } from '../../services/api.service';
 import { Subscription } from 'rxjs';
 import { InAppBrowser } from '@ionic-native/in-app-browser/ngx';
 import { ModalChairPartsPage } from '../modal-chair-parts/modal-chair-parts.page';
@@ -23,7 +23,7 @@ export class ModalScanResultPage implements OnInit {
     private alertController: AlertController,
     private nav: IonNav,
     private platform: Platform,
-    private scanService: ScanService,
+    private scanService: ApiService,
     private iab: InAppBrowser,
     private engineService: EngineService,
   ) { }

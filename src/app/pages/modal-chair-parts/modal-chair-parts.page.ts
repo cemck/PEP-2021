@@ -1,6 +1,6 @@
 import { Component, OnInit } from '@angular/core';
 import { ModalController, AlertController, IonNav, Platform } from '@ionic/angular';
-import { ChairParts, ScanService } from '../../services/scan.service';
+import { ChairParts, ApiService } from '../../services/api.service';
 import { Subscription } from 'rxjs';
 import { ModalLiveCameraStreamPage } from './../modal-live-camera-stream/modal-live-camera-stream.page';
 import { EngineService } from '../../engine/engine.service';
@@ -23,7 +23,7 @@ export class ModalChairPartsPage implements OnInit {
     private alertController: AlertController,
     private nav: IonNav,
     private platform: Platform,
-    private scanService: ScanService,
+    private scanService: ApiService,
     private engineService: EngineService,
   ) { }
 

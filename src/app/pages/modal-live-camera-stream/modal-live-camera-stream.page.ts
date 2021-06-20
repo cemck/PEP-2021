@@ -1,6 +1,6 @@
 import { Component, OnInit } from '@angular/core';
 import { ModalController, AlertController, IonNav, Platform } from '@ionic/angular';
-import { ScanService } from '../../services/scan.service';
+import { ApiService } from '../../services/api.service';
 import { Subscription } from 'rxjs';
 import { StreamingMedia, StreamingVideoOptions } from '@ionic-native/streaming-media/ngx';
 
@@ -20,7 +20,7 @@ export class ModalLiveCameraStreamPage implements OnInit {
     private alertController: AlertController,
     private nav: IonNav,
     public platform: Platform,
-    private scanService: ScanService,
+    private scanService: ApiService,
     private streamingMedia: StreamingMedia
   ) { }
 

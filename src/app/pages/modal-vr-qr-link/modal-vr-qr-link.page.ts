@@ -1,6 +1,6 @@
 import { Component, OnInit } from '@angular/core';
 import { ModalController, IonNav, Platform } from '@ionic/angular';
-import { Scan, ScanService } from '../../services/scan.service';
+import { Scan, ApiService } from '../../services/api.service';
 import { Subscription } from 'rxjs';
 import { ModalScanResultPage } from '../modal-scan-result/modal-scan-result.page';
 import { InAppBrowser, InAppBrowserOptions } from '@ionic-native/in-app-browser/ngx';
@@ -27,7 +27,7 @@ export class ModalVrQrLinkPage implements OnInit {
     private modalController: ModalController,
     private nav: IonNav,
     public platform: Platform,
-    private scanService: ScanService,
+    private scanService: ApiService,
     private iab: InAppBrowser,
     private browserTab: BrowserTab,
   ) { }
