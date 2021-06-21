@@ -144,7 +144,7 @@ export class HomePage {
   async setStatusbarColor(init: boolean) {
     const toolbarColor = getComputedStyle(document.querySelector('#toolbar-secondary')).getPropertyValue('--ion-color-shade').trim();
 
-    if (init) await delay(2000); // Delay to fix statusbar overlaping the splashscreen
+    if (init) await delay(3500); // Delay to fix statusbar overlaping the splashscreen
 
     this.statusBar.backgroundColorByHexString(toolbarColor);
     this.statusBar.styleLightContent();
