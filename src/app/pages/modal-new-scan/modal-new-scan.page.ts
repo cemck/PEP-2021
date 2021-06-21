@@ -32,9 +32,6 @@ export class ModalNewScanPage implements OnInit {
 
     prefersDark.addEventListener('change', e => {
       this.isStatusBarLight = !e.matches;
-      // if (this.platform.is('android')) {
-      //   this.setStatusbarColor();
-      // }
       if (this.platform.is('mobile')) this.setStatusbarColor();
     });
 
@@ -44,11 +41,7 @@ export class ModalNewScanPage implements OnInit {
     const prefersDark = window.matchMedia('(prefers-color-scheme: dark)');
     this.isStatusBarLight = !prefersDark.matches;
 
-    // if (this.platform.is('android')) {
-    //   this.setStatusbarColor();
-    // }
     if (this.platform.is('mobile')) this.setStatusbarColor();
-
   }
 
   public get width() {
