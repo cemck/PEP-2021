@@ -5,6 +5,7 @@ import { Subscription } from 'rxjs';
 import { InAppBrowser } from '@ionic-native/in-app-browser/ngx';
 import { ModalChairPartsPage } from '../modal-chair-parts/modal-chair-parts.page';
 import { EngineService } from '../../engine/engine.service';
+import { StatusBar } from '@ionic-native/status-bar/ngx';
 
 @Component({
   selector: 'app-modal-scan-result',
@@ -18,6 +19,7 @@ export class ModalScanResultPage implements OnInit {
   private subscription: Subscription = new Subscription();
   alert: HTMLIonAlertElement;
   segment: string;
+  isStatusBarLight = true;
 
   public constructor(
     private alertController: AlertController,
@@ -26,9 +28,18 @@ export class ModalScanResultPage implements OnInit {
     private scanService: ApiService,
     private iab: InAppBrowser,
     private engineService: EngineService,
+    private statusBar: StatusBar
   ) { }
 
   public ngOnInit() {
+    const prefersDark = window.matchMedia('(prefers-color-scheme: dark)');
+    this.isStatusBarLight = !prefersDark.matches;
+
+    prefersDark.addEventListener('change', e => {
+      this.isStatusBarLight = !e.matches;
+      if (this.platform.is('mobile')) this.setStatusbarColor();
+    });
+
     this.segment = 'chair';
     this.engineService.part = 'chair';
     console.log('isKinectScan :', this.isKinectScan);
@@ -52,6 +63,10 @@ export class ModalScanResultPage implements OnInit {
 
   ionViewWillEnter() {
     this.engineService.resize();
+    const prefersDark = window.matchMedia('(prefers-color-scheme: dark)');
+    this.isStatusBarLight = !prefersDark.matches;
+
+    if (this.platform.is('mobile')) this.setStatusbarColor();
   }
 
   ionViewDidEnter() {
@@ -118,11 +133,6 @@ export class ModalScanResultPage implements OnInit {
     }
   }
 
-  restartScan() {
-    this.scanService.reset();
-    this.goRoot();
-  }
-
   segmentChanged(event: any) {
     // console.log('segmentChanged with: ', event.detail.value);
     this.segment = event.detail.value;
@@ -145,4 +155,36 @@ export class ModalScanResultPage implements OnInit {
     console.log('onDidDismiss resolved with role', role);
   }
 
+  async presentAlertConfirm() {
+    this.alert = await this.alertController.create({
+      header: 'Scan abbrechen?',
+      message: 'Bist du sicher, dass du den Scan abbrechen möchtest?',
+      buttons: [
+        {
+          text: 'Nein',
+          role: 'cancel',
+          cssClass: 'secondary',
+          handler: (blah) => {
+            console.log('Confirm Cancel: blah');
+            return;
+          }
+        }, {
+          text: 'Ja',
+          handler: () => {
+            console.log('Confirm Okay');
+            this.close();
+          }
+        }
+      ]
+    });
+
+    await this.alert.present();
+  }
+
+  setStatusbarColor() {
+    const toolbarColor = getComputedStyle(document.querySelector('#toolbar-secondary')).getPropertyValue('--ion-color-shade').trim();
+
+    this.statusBar.backgroundColorByHexString(toolbarColor);
+    this.statusBar.styleLightContent();
+  }
 }

@@ -51,11 +51,11 @@ export class EngineService implements OnDestroy {
     this.scene = new THREE.Scene();
 
     this.camera = new THREE.PerspectiveCamera(
-      50, window.innerWidth / window.innerHeight, 0.1, 1000
+      45, window.innerWidth / window.innerHeight, 0.1, 1000
     );
-    this.camera.position.z = 50;
+    this.camera.position.z = 60;
     this.camera.position.y = 30;
-    this.camera.position.x = 50;
+    this.camera.position.x = 60;
     this.camera.lookAt(0, 0, 0); // Point camera at chair
     this.scene.add(this.camera);
 

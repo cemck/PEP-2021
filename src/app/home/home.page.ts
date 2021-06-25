@@ -33,75 +33,6 @@ export class HomePage {
       // }
       if (this.platform.is('mobile')) this.setStatusbarColor(false);
     });
-
-    this.scans = [
-      {
-        "name": "Username 1",
-        "avatar": "",
-        "date": "01.01.2021",
-        "measurements": [450, 480, 350, 590, 230]
-      },
-      {
-        "name": "Username 2",
-        "avatar": "",
-        "date": "01.01.2021",
-        "measurements": [450, 480, 350, 590, 230]
-      },
-      {
-        "name": "Username 3",
-        "avatar": "",
-        "date": "01.01.2021",
-        "measurements": [450, 480, 350, 590, 230]
-      },
-      {
-        "name": "Username 4",
-        "avatar": "",
-        "date": "01.01.2021",
-        "measurements": [450, 480, 350, 590, 230]
-      },
-      {
-        "name": "Username 5",
-        "avatar": "",
-        "date": "01.01.2021",
-        "measurements": [450, 480, 350, 590, 230]
-      },
-      {
-        "name": "Username",
-        "avatar": "",
-        "date": "01.01.2021",
-        "measurements": [450, 480, 350, 590, 230]
-      },
-      {
-        "name": "Username",
-        "avatar": "",
-        "date": "01.01.2021",
-        "measurements": [450, 480, 350, 590, 230]
-      },
-      {
-        "name": "Username",
-        "avatar": "",
-        "date": "01.01.2021",
-        "measurements": [450, 480, 350, 590, 230]
-      },
-      {
-        "name": "Username",
-        "avatar": "",
-        "date": "01.01.2021",
-        "measurements": [450, 480, 350, 590, 230]
-      },
-      {
-        "name": "Username",
-        "avatar": "",
-        "date": "01.01.2021",
-        "measurements": [450, 480, 350, 590, 230]
-      },
-      {
-        "name": "Username",
-        "avatar": "",
-        "date": "01.01.2021",
-        "measurements": [450, 480, 350, 590, 230]
-      }
-    ]
   }
 
   ionViewDidEnter() {
@@ -129,25 +60,12 @@ export class HomePage {
     await modal.present();
   }
 
-  async presentDetail() {
-    // const modal = await this.modalController.create({
-    //   presentingElement: this.routerOutlet.nativeEl,
-    //   component: ModalBaseComponent,
-    //   componentProps: {
-    //     rootPage: ModalContentPage,
-    //   },
-    // });
-
-    // await modal.present();
-  }
-
   async setStatusbarColor(init: boolean) {
     const toolbarColor = getComputedStyle(document.querySelector('#toolbar-secondary')).getPropertyValue('--ion-color-shade').trim();
 
-    if (init) await delay(3500); // Delay to fix statusbar overlaping the splashscreen
+    if (init) await delay(2500); // Delay to fix statusbar overlaping the splashscreen
 
     this.statusBar.backgroundColorByHexString(toolbarColor);
     this.statusBar.styleLightContent();
   }
 }
-

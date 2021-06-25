@@ -1,17 +1,17 @@
 <ion-header>
-  <ion-toolbar color="light">
-    <!-- <ion-buttons slot="start"> -->
-    <!-- <ion-button (click)="close()" *ngIf="level == 0">
+  <ion-toolbar color="primary">
+    <ion-buttons slot="start">
+      <ion-button (click)="presentAlertConfirm()" *ngIf="level == 0">
         <ion-icon slot="icon-only" name="close"></ion-icon>
       </ion-button>
-      <ion-back-button *ngIf="level > 0"></ion-back-button> -->
-    <!-- </ion-buttons> -->
+      <!-- <ion-back-button *ngIf="level > 0"></ion-back-button> -->
+    </ion-buttons>
     <ion-title>Bauteil auswählen</ion-title>
   </ion-toolbar>
 </ion-header>
 
 <ion-content>
-  <ion-grid style="height: 100%; display: flex; flex-flow: column;">
+  <ion-grid class="animate__animated animate__zoomIn animate__faster" style="height: 100%; display: flex; flex-flow: column;">
 
     <app-engine></app-engine>
 
@@ -92,7 +92,8 @@
           <ion-icon slot="start" name="checkmark"></ion-icon>
           Bestätigen
         </ion-button>
-        <ion-button color="dark" shape="round" fill="outline" class="small_b" style="margin-bottom: 8px;" (click)="restartScan()">Neustarten</ion-button>
+        <ion-button color="dark" shape="round" fill="outline" class="small_b" style="margin-bottom: 8px;" (click)="presentAlertConfirm()">Neustarten
+        </ion-button>
       </div>
     </ion-row>
   </ion-grid>

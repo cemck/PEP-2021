@@ -1,16 +1,16 @@
 <ion-header>
 
-  <ion-toolbar color="light">
+  <ion-toolbar color="primary">
     <ion-buttons slot="start">
-      <ion-button (click)="close()" *ngIf="level == 0">
+      <ion-button (click)="presentAlertConfirm()" *ngIf="level == 0">
         <ion-icon slot="icon-only" name="close"></ion-icon>
       </ion-button>
       <ion-back-button *ngIf="level > 0"></ion-back-button>
     </ion-buttons>
-    <ion-title>Scan bestätigen</ion-title>
+    <ion-title>Scan Übersicht</ion-title>
   </ion-toolbar>
 
-  <ion-toolbar color="light">
+  <ion-toolbar color="primary">
     <ion-segment [(ngModel)]="this.segment" (ionChange)="segmentChanged($event)" value="chair">
       <ion-segment-button value="chair">Freischwinger</ion-segment-button>
       <ion-segment-button value="scan">Bodyscan</ion-segment-button>
@@ -25,7 +25,7 @@
     <!-- <ion-col style="height: 100%;"> -->
     <!-- <ion-row class="ion-align-items-center" style="height: 80%; background-color: rgb(0, 4, 255);"> -->
 
-    <div *ngIf="this.segment === 'chair'">
+    <div class="animate__animated animate__zoomIn animate__faster" *ngIf="this.segment === 'chair'">
       <!-- <scenegraph geometry="box" #scenegraph></scenegraph> -->
       <!-- <scenegraph geometry="box"></scenegraph> -->
       <app-engine></app-engine>
@@ -91,7 +91,7 @@
       </div>
     </div>
 
-    <div *ngIf="this.segment === 'scan'">
+    <div class="animate__animated animate__zoomIn animate__faster" *ngIf="this.segment === 'scan'">
       <div [ngClass]="{'medium_margin_scan': width >= 567, 'small_margin': width < 567 }">
         <ion-list class="list_padding" lines="none">
           <ion-item class="item-background-color">
@@ -173,7 +173,8 @@
           <ion-icon slot="start" name="checkmark"></ion-icon>
           Bestätigen
         </ion-button>
-        <ion-button color="dark" shape="round" fill="outline" class="small_b" style="margin-bottom: 8px;" (click)="restartScan()">Neustarten</ion-button>
+        <ion-button color="dark" shape="round" fill="outline" class="small_b" style="margin-bottom: 8px;" (click)="presentAlertConfirm()">Neustarten
+        </ion-button>
       </div>
     </ion-row>
     <!-- </ion-col> -->

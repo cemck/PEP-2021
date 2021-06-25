@@ -1,5 +1,5 @@
 import { Component, OnInit } from '@angular/core';
-import { ModalController, IonNav, Platform } from '@ionic/angular';
+import { AlertController, ModalController, IonNav, Platform } from '@ionic/angular';
 import { ModalVrQrLinkPage } from '../modal-vr-qr-link/modal-vr-qr-link.page';
 import { ModalKinectPage } from '../modal-kinect/modal-kinect.page';
 import { StatusBar } from '@ionic-native/status-bar/ngx';
@@ -14,16 +14,18 @@ export class ModalNewScanPage implements OnInit {
   level = 0;
   nextPage = ModalVrQrLinkPage;
   nextPageKinect = ModalKinectPage;
-  isStatusBarLight = true
+  isStatusBarLight = true;
+  alert: HTMLIonAlertElement;
 
   constructor(
     private modalController: ModalController,
+    private alertController: AlertController,
     private nav: IonNav,
     private platform: Platform,
     private statusBar: StatusBar,
     private scanService: ApiService,
   ) {
-    this.addAndroidBackButtonSupport();
+    // this.addAndroidBackButtonSupport();
   }
 
   ngOnInit() {

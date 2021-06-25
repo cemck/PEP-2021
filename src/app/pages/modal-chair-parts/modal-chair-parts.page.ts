@@ -11,7 +11,7 @@ import { EngineService } from '../../engine/engine.service';
   styleUrls: ['./modal-chair-parts.page.scss'],
 })
 export class ModalChairPartsPage implements OnInit {
-  level = 4;
+  level = 0;
   isKinectScan: boolean;
   nextPage = ModalLiveCameraStreamPage;
   private subscription: Subscription = new Subscription();
@@ -125,7 +125,7 @@ export class ModalChairPartsPage implements OnInit {
     this.alert = await this.alertController.create({
       // cssClass: 'my-custom-class',
       // header: 'Error',
-      subHeader: 'Fehler',
+      subHeader: 'Info',
       message: 'Bitte Bauteil auswählen.',
       buttons: ['OK']
     });
@@ -134,5 +134,32 @@ export class ModalChairPartsPage implements OnInit {
 
     const { role } = await this.alert.onDidDismiss();
     console.log('onDidDismiss resolved with role', role);
+  }
+
+  async presentAlertConfirm() {
+    const alert = await this.alertController.create({
+      cssClass: 'my-custom-class',
+      header: 'Scan abbrechen?',
+      message: 'Bist du sicher, dass du den Scan abbrechen möchtest?',
+      buttons: [
+        {
+          text: 'Nein',
+          role: 'cancel',
+          cssClass: 'secondary',
+          handler: () => {
+            console.log('Confirm Cancel');
+            return;
+          }
+        }, {
+          text: 'Ja',
+          handler: () => {
+            console.log('Confirm Okay');
+            this.close();
+          }
+        }
+      ]
+    });
+
+    await alert.present();
   }
 }

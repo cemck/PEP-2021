@@ -59,7 +59,6 @@ export class KinectScan {
 export class ApiService {
   errorAlert: HTMLIonAlertElement;
   loadingAlert: HTMLIonLoadingElement;
-  username: string = 'cemck';
   currentKinectScan: KinectScan = new KinectScan();
   currentScan: Scan = new Scan();
   currentMeasurements: Measurements = new Measurements();
@@ -133,17 +132,14 @@ export class ApiService {
     )
   };
 
-  createNewScan(username: string): Observable<Scan> {
+  createNewScan(): Observable<Scan> {
     let headers: HttpHeaders = new HttpHeaders();
     headers = headers.append('Accept', 'application/json');
     headers = headers.append('Content-Type', 'application/json');
     // console.log("createNewScan() headers:", headers);
 
-    let body = JSON.stringify({ username });
-
-    return this.httpClient.post<Scan>(
+    return this.httpClient.get<Scan>(
       this.api_url + '/createscan',
-      body,
       { headers: headers }
     ).pipe(
       map((data: Scan) => {

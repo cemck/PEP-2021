@@ -84,7 +84,7 @@ export class ModalVrQrLinkPage implements OnInit {
 
   createNewScan() {
     this.subscription.add(
-      this.scanService.createNewScan(this.scanService.username).subscribe(async (data: Scan) => {
+      this.scanService.createNewScan().subscribe(async (data: Scan) => {
         // console.log('data:' + JSON.stringify(data));
         if (this.platform.is('mobile')) {
           await this.openBrowser();
