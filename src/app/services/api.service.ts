@@ -69,6 +69,7 @@ export class ApiService {
   // api_url: string = 'http://192.168.0.196:5000';
   // api_url: string = 'http://141.99.133.109:5000';
   // api_url: string = 'http://141.99.133.65:5000';
+  // api_url: string = 'http://141.99.133.57:5000';
   //simulations server IP: 141.99.133.72
   //simulations server IP: 141.99.133.65 (sim12)
 
@@ -360,7 +361,6 @@ export class ApiService {
         console.log('Received data from /produce' + JSON.stringify(data));
         // console.log('Scan state value: ' + JSON.stringify(data[0].state));
         // this.currentChairParts = data['length_data'];
-        // this.dismissLoadingAlert();
 
         return data;
       }),
@@ -422,6 +422,7 @@ export class ApiService {
   async dismissLoadingAlert() {
     try {
       await this.loadingAlert.dismiss();
+      console.log('dismiss');
     } catch {
 
     }

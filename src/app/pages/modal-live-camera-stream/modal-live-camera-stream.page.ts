@@ -34,6 +34,7 @@ export class ModalLiveCameraStreamPage implements OnInit {
 
   ionViewDidEnter() {
     this.nav.removeIndex(1);
+    this.scanService.dismissLoadingAlert();
   }
 
   goForward() {
