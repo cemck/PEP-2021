@@ -1,8 +1,23 @@
-import { Component, OnInit } from '@angular/core';
+import { Component, OnInit, ViewChild } from '@angular/core';
 import { ModalController, AlertController, IonNav, Platform } from '@ionic/angular';
 import { ApiService } from '../../services/api.service';
-import { Subscription } from 'rxjs';
-import { StreamingMedia, StreamingVideoOptions } from '@ionic-native/streaming-media/ngx';
+import { Subscription, timer } from 'rxjs';
+import {
+  IDRMLicenseServer,
+  VgApiService,
+  BitrateOptions,
+} from '@videogular/ngx-videogular/core';
+import {
+  VgHlsDirective,
+} from '@videogular/ngx-videogular/streaming';
+
+export interface IMediaStream {
+  type: 'vod' | 'dash' | 'hls';
+  source: string;
+  label: string;
+  token?: string;
+  licenseServers?: IDRMLicenseServer;
+}
 
 @Component({
   selector: 'app-modal-live-camera-stream',
@@ -14,6 +29,21 @@ export class ModalLiveCameraStreamPage implements OnInit {
   nextPage = ModalLiveCameraStreamPage;
   private subscription: Subscription = new Subscription();
   alert: HTMLIonAlertElement;
+  @ViewChild(VgHlsDirective, { static: true }) vgHls: VgHlsDirective;
+
+  currentStream: IMediaStream;
+  api: VgApiService;
+
+  bitrates: BitrateOptions[];
+
+  streams: IMediaStream[] = [
+    {
+      type: 'hls',
+      label: 'HLS: Streaming',
+      source:
+        'http://141.99.133.57:5000/stream/index.m3u8',
+    },
+  ];
 
   constructor(
     private modalController: ModalController,
@@ -21,11 +51,10 @@ export class ModalLiveCameraStreamPage implements OnInit {
     private nav: IonNav,
     public platform: Platform,
     private scanService: ApiService,
-    private streamingMedia: StreamingMedia
   ) { }
 
   ngOnInit() {
-
+    this.currentStream = this.streams[0];
   }
 
   ngOnDestroy() {
@@ -57,16 +86,41 @@ export class ModalLiveCameraStreamPage implements OnInit {
     this.goRoot();
   }
 
+  onPlayerReady(api: VgApiService) {
+    this.api = api;
+  }
+
+  setBitrate(option: BitrateOptions) {
+    switch (this.currentStream.type) {
+      case 'hls':
+        this.vgHls.setBitrate(option);
+        break;
+    }
+  }
+
+  // onClickStream(stream: IMediaStream) {
+  //   this.api.pause();
+  //   this.bitrates = null;
+
+  //   const source = timer(1000, 2000);
+
+  //   const timerSubscription: Subscription = source.subscribe(() => {
+  //     this.currentStream = stream;
+
+  //     timerSubscription.unsubscribe();
+  //   });
+  // }
+
   openVideoPlayer() {
     console.log('open video player');
-    let options: StreamingVideoOptions = {
-      successCallback: () => { console.log('Video played') },
-      errorCallback: (e) => { console.log('Error streaming') },
-      // orientation: 'landscape',
-      shouldAutoClose: false,
-      // controls: false
-    };
-    this.streamingMedia.playVideo('http://static.videogular.com/assets/videos/videogular.mp4', options);
+    // let options: StreamingVideoOptions = {
+    //   successCallback: () => { console.log('Video played') },
+    //   errorCallback: (e) => { console.log('Error streaming') },
+    //   // orientation: 'landscape',
+    //   shouldAutoClose: false,
+    //   // controls: false
+    // };
+    // this.streamingMedia.playVideo('http://static.videogular.com/assets/videos/videogular.mp4', options);
   }
 
   async presentAlert() {

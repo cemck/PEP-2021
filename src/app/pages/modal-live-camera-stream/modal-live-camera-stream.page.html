@@ -12,19 +12,47 @@
 
 <ion-content>
   <div *ngIf="!this.platform.is('mobile')">
-    <vg-player>
+    <!-- <vg-player>
       <video [vgMedia]="$any(media)" #media id="singleVideo" preload="auto" controls>
         <source src="http://141.99.133.57:5000/video_feed">
       </video>
-    </vg-player>
+    </vg-player> -->
+
     <!-- <img src="http://141.99.133.57:5000/video_feed" width="100%"> -->
+
+    <vg-player (onPlayerReady)="onPlayerReady($event)">
+      <vg-overlay-play></vg-overlay-play>
+      <vg-buffering></vg-buffering>
+
+      <vg-controls>
+        <vg-play-pause></vg-play-pause>
+
+        <vg-scrub-bar>
+          <vg-scrub-bar-current-time></vg-scrub-bar-current-time>
+          <vg-scrub-bar-buffering-time></vg-scrub-bar-buffering-time>
+        </vg-scrub-bar>
+
+        <vg-time-display vgProperty="left" vgFormat="mm:ss"></vg-time-display>
+
+        <vg-mute></vg-mute>
+        <vg-volume></vg-volume>
+
+        <vg-fullscreen></vg-fullscreen>
+      </vg-controls>
+
+      <video #media (onGetBitrates)="bitrates = $event" [vgMedia]="$any(media)" [vgHls]="currentStream.source" id="singleVideo" crossorigin>
+      </video>
+    </vg-player>
   </div>
 
   <div *ngIf="this.platform.is('mobile')">
     <!-- <ion-button color="primary" (click)="openVideoPlayer()">Videoplayer Öffnen</ion-button> -->
 
-    <video width="auto" height="100%" controls="controls" autoplay="true">
+    <!-- <video width="auto" height="100%" controls="controls" autoplay="true">
       <source src="http://141.99.133.57:5000/video_feed" />
+    </video> -->
+    <video id="video-player" controls preload="none">
+      <source src="http://141.99.133.57:5000/stream/index.m3u8" type="application/x-mpegURL">
     </video>
     <!-- <img src="http://141.99.133.57:5000/video_feed" width="100%"> -->
 

@@ -65,13 +65,9 @@ export class ApiService {
   statusText: string = null;
   currentChair: Chair = new Chair();
   currentChairParts: ChairParts = new ChairParts();
-  api_url: string = 'https://api-pep2021.azurewebsites.net';
-  // api_url: string = 'http://192.168.0.196:5000';
-  // api_url: string = 'http://141.99.133.109:5000';
-  // api_url: string = 'http://141.99.133.65:5000';
-  // api_url: string = 'http://141.99.133.57:5000';
-  //simulations server IP: 141.99.133.72
-  //simulations server IP: 141.99.133.65 (sim12)
+  // api_url: string = 'https://api-pep2021.azurewebsites.net';
+  api_url: string = 'http://141.99.133.57:5000';
+  //laptop IP: 141.99.133.57
 
   constructor(
     private httpClient: HttpClient,

@@ -92,7 +92,7 @@
     </div>
 
     <div class="animate__animated animate__zoomIn animate__faster" *ngIf="this.segment === 'scan'">
-      <div [ngClass]="{'medium_margin_scan': width >= 567, 'small_margin': width < 567, 'medium_height': height >= 600, 'small_margin': height < 600  }">
+      <div [ngClass]="{'medium_margin_scan': width >= 567, 'small_margin': width < 567, 'medium_height': height >= 600, 'small_margin_2': height < 600  }">
         <ion-list class="list_padding" lines="none">
           <ion-item class="item-background-color">
             <ion-label slot="start">{{ 'Körpertiefe' }}</ion-label>
